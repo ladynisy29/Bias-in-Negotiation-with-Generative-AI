@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Negotiation Results — AI Negotiation</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+  <nav>
+    <a href="start-session.html" class="logo">🧠 AI Negotiation</a>
+    <button class="hamburger" aria-label="Toggle navigation menu" onclick="document.querySelector('nav ul').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul>
+      <li><a href="start-session.html">Home</a></li>
+      <li><a href="start-session.html">New Session</a></li>
+      <li><a href="#" id="nav-export">Export Data</a></li>
+    </ul>
+  </nav>
+
+  <main id="content">
+    <div class="results-container">
+      <h1 class="text-center mb-3">Negotiation Results</h1>
+
+      <!-- Outcome Banner -->
+      <div id="outcome-badge" class="outcome-banner outcome-accepted">
+        ⏳ Loading result...
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Final Offer</span>
+          <span class="stat-value" id="final-price">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">AI Reserve Price</span>
+          <span class="stat-value" id="reserve-price">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Your Profit</span>
+          <span class="stat-value" id="profit-value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Turns Used</span>
+          <span class="stat-value" id="turns-used">— / 5</span>
+        </div>
+      </div>
+
+      <!-- Concession Pattern -->
+      <section class="concession-section">
+        <h2>📉 Your Concession Pattern</h2>
+        <table id="concession-table">
+          <thead>
+            <tr>
+              <th>Turn</th>
+              <th>Your Offer</th>
+              <th>Change</th>
+              <th>Change %</th>
+            </tr>
+          </thead>
+          <tbody id="concession-body">
+            <!-- Populated by Clarence's JS -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Session Info -->
+      <section class="card-sm mb-3">
+        <p>Session ID: <span id="session-id" class="mono">—</span></p>
+        <p>Duration: <span id="session-duration">—</span></p>
+      </section>
+
+      <!-- Action Buttons -->
+      <div class="result-actions">
+        <a href="start-session.html" class="btn-primary">🔄 Start New Negotiation</a>
+        <a href="#" id="export-btn" class="btn-secondary">📥 Export My Data</a>
+      </div>
+
+      <!-- Thank You Note -->
+      <p class="text-center text-muted mt-4">Thank you for participating in our research on AI negotiation bias.</p>
+    </div>
+  </main>
+
+  <footer>
+    Junia — M1 Research Project 2026 | AI &amp; Negotiation Bias Study
+  </footer>
+
+  <div id="modal-overlay" class="hidden"></div>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — AI Negotiation</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+  <nav>
+    <a href="start-session.html" class="logo">🧠 AI Negotiation</a>
+    <button class="hamburger" aria-label="Toggle navigation menu" onclick="document.querySelector('nav ul').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul>
+      <li><a href="start-session.html">Home</a></li>
+      <li><a href="start-session.html">New Session</a></li>
+      <li><a href="#" id="nav-export">Export Data</a></li>
+    </ul>
+  </nav>
+
+  <main id="content">
+    <div class="auth-container">
+      <div class="auth-card">
+        <h1>Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to continue your negotiation session</p>
+
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required placeholder="Your username" autocomplete="username">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Your password" autocomplete="current-password">
+          </div>
+
+          <button type="submit" id="login-btn" class="btn-primary btn-full">Sign In</button>
+        </form>
+
+        <div id="login-error" class="error-msg hidden"></div>
+
+        <p class="auth-link">Don't have an account? <a href="register.html">Register here</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Junia — M1 Research Project 2026 | AI &amp; Negotiation Bias Study
+  </footer>
+
+  <div id="modal-overlay" class="hidden"></div>
+
+</body>
+</html>
