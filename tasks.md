@@ -24,64 +24,64 @@
 
 ## Phase 3: Negotiation Session Management
 
-- [ ] 3.1 Implement POST /start-session endpoint
-- [ ] 3.2 Implement AI reservation price randomization (850k-1.15M)
-- [ ] 3.3 Implement turn counter initialization and tracking
-- [ ] 3.4 Implement session state validation
-- [ ] 3.5 Implement GET /session/<id> endpoint
+- [x] 3.1 Implement POST /start-session endpoint
+- [x] 3.2 Implement AI reservation price randomization (850k-1.15M)
+- [x] 3.3 Implement turn counter initialization and tracking
+- [x] 3.4 Implement session state validation
+- [x] 3.5 Implement GET /session/<id> endpoint
 - [ ] 3.6 Add session isolation verification
 - [ ] 3.7 Write unit tests for session management (target: 100% coverage)
 
 ## Phase 4: AI Integration & OpenAI API
 
-- [ ] 4.1 Set up OpenAI API client with environment variables
-- [ ] 4.2 Create system prompt for "firm but reasonable negotiator" behavior
-- [ ] 4.3 Implement POST /send-message endpoint
-- [ ] 4.4 Implement conversation history building for API context
-- [ ] 4.5 Implement JSON response parsing and validation
-- [ ] 4.6 Implement offer extraction from AI messages (regex patterns)
-- [ ] 4.7 Implement error handling for API failures and timeouts
-- [ ] 4.8 Implement retry logic with exponential backoff
-- [ ] 4.9 Write unit tests for AI integration (target: 90% coverage)
+- [x] 4.1 Set up OpenAI API client with environment variables
+- [x] 4.2 Create system prompt for "firm but reasonable negotiator" behavior
+- [x] 4.3 Implement POST /send-message endpoint
+- [x] 4.4 Implement conversation history building for API context
+- [x] 4.5 Implement JSON response parsing and validation
+- [x] 4.6 Implement offer extraction from AI messages (regex patterns)
+- [x] 4.7 Implement error handling for API failures and timeouts
+- [x] 4.8 Implement retry logic with exponential backoff
+- [x] 4.9 Write unit tests for AI integration (target: 90% coverage)
 
 ## Phase 5: Dialogue & Offer Tracking
 
-- [ ] 5.1 Implement DialogueTurn creation for human messages
-- [ ] 5.2 Implement DialogueTurn creation for AI messages
-- [ ] 5.3 Implement OfferHistory creation with concession calculation
-- [ ] 5.4 Implement concession_amount calculation logic
-- [ ] 5.5 Implement concession_percentage calculation logic
-- [ ] 5.6 Implement dialogue history retrieval endpoint
-- [ ] 5.7 Write unit tests for dialogue tracking (target: 95% coverage)
+- [x] 5.1 Implement DialogueTurn creation for human messages
+- [x] 5.2 Implement DialogueTurn creation for AI messages
+- [x] 5.3 Implement OfferHistory creation with concession calculation
+- [x] 5.4 Implement concession_amount calculation logic
+- [x] 5.5 Implement concession_percentage calculation logic
+- [x] 5.6 Implement dialogue history retrieval endpoint
+- [x] 5.7 Write unit tests for dialogue tracking (target: 95% coverage)
 
 ## Phase 6: Turn Management & Enforcement
 
-- [ ] 6.1 Implement turn counter validation (max 5 turns)
-- [ ] 6.2 Implement turn increment logic after each exchange
-- [ ] 6.3 Implement turn-based message rejection (after turn 5)
-- [ ] 6.4 Implement turn number assignment to DialogueTurn records
+- [x] 6.1 Implement turn counter validation (max 5 turns)
+- [x] 6.2 Implement turn increment logic after each exchange
+- [x] 6.3 Implement turn-based message rejection (after turn 5)
+- [x] 6.4 Implement turn number assignment to DialogueTurn records
 - [ ] 6.5 Write unit tests for turn management (target: 100% coverage)
 
 ## Phase 7: Final Offer & Acceptance Logic
 
-- [ ] 7.1 Implement POST /submit-final-offer endpoint
-- [ ] 7.2 Implement acceptance threshold calculation (RP * 0.95)
-- [ ] 7.3 Implement acceptance decision logic
-- [ ] 7.4 Implement rejection decision logic
-- [ ] 7.5 Implement profit calculation for accepted deals
-- [ ] 7.6 Implement profit calculation for rejected deals
-- [ ] 7.7 Implement session finalization (ended_at, outcome)
+- [x] 7.1 Implement POST /submit-final-offer endpoint
+- [x] 7.2 Implement acceptance threshold calculation (RP * 0.95)
+- [x] 7.3 Implement acceptance decision logic
+- [x] 7.4 Implement rejection decision logic
+- [x] 7.5 Implement profit calculation for accepted deals
+- [x] 7.6 Implement profit calculation for rejected deals
+- [x] 7.7 Implement session finalization (ended_at, outcome)
 - [ ] 7.8 Write unit tests for acceptance logic (target: 100% coverage)
 
 ## Phase 8: Data Collection & Export
 
-- [ ] 8.1 Implement concession pattern calculation
-- [ ] 8.2 Implement offer progression data aggregation
-- [ ] 8.3 Implement session summary statistics calculation
-- [ ] 8.4 Implement CSV export endpoint (GET /export/sessions)
-- [ ] 8.5 Implement conversation transcript export
-- [ ] 8.6 Implement profit analysis data export
-- [ ] 8.7 Write unit tests for data collection (target: 90% coverage)
+- [x] 8.1 Implement concession pattern calculation
+- [x] 8.2 Implement offer progression data aggregation
+- [x] 8.3 Implement session summary statistics calculation
+- [x] 8.4 Implement CSV export endpoint (GET /export/sessions)
+- [x] 8.5 Implement conversation transcript export
+- [x] 8.6 Implement profit analysis data export
+- [x] 8.7 Write unit tests for data collection (target: 90% coverage)
 
 ## Phase 9: Error Handling & Validation
 
