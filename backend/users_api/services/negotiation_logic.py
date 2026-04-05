@@ -195,8 +195,9 @@ class NegotiationLogicService:
         session.outcome = "Accepted" if accepted else "Declined"
         session.final_price = float(final_offer) if accepted else None
 
+        BUYER_RESERVATION_PRICE = 25_000_000
         if accepted:
-            session.human_profit = float(final_offer) - session.initial_offer
+            session.human_profit = BUYER_RESERVATION_PRICE - float(final_offer)
             session.ai_profit = float(final_offer) - session.ai_reservation_price
         else:
             session.human_profit = 0
