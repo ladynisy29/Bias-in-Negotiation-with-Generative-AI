@@ -26,6 +26,8 @@ class ExportSessionsCsvView(APIView):
                 "final_offer",
                 "final_price",
                 "outcome",
+                "session_status",
+                "dropoff_stage",
                 "human_profit",
                 "ai_profit",
             ]
@@ -44,6 +46,8 @@ class ExportSessionsCsvView(APIView):
                     session.final_offer,
                     session.final_price,
                     session.outcome,
+                    session.session_status,
+                    session.dropoff_stage,
                     session.human_profit,
                     session.ai_profit,
                 ]
@@ -66,6 +70,8 @@ class ExportTranscriptView(APIView):
                 "offer_progression": self.logic.offer_progression(session),
                 "concession_pattern": self.logic.calculate_concession_pattern(session),
                 "session_summary": self.logic.session_summary_statistics(session),
+                "session_status": session.session_status,
+                "dropoff_stage": session.dropoff_stage,
             }
         )
 

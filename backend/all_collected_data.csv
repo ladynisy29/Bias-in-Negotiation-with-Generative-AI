@@ -1,0 +1,126 @@
+row_type,user_id,age,gender,location,nationality,created_at,session_id,initial_offer,final_offer,final_price,outcome,session_status,dropoff_stage,started_at,ended_at,session_duration_seconds,turn_count,turn_number,speaker,message,offer_amount,concession_amount,offer_made,is_counter_offer,response_time_seconds,message_length,sentiment,strategy_tag,timestamp
+users,f506fed9fce74250960fedb3bf9f74cf,27,X,,,2026-04-06 04:14:15.518750,,,,,,,,,,,,,,,,,,,,,,,
+users,b5beb83883d241aa93a926e56b3b5ad6,25,X,,,2026-04-06 04:20:18.658835,,,,,,,,,,,,,,,,,,,,,,,
+users,bf23bb1dad714f5ca7b0ddc48bc28752,26,X,,,2026-04-06 04:28:44.476702,,,,,,,,,,,,,,,,,,,,,,,
+users,4221ee8131b540b8b69d87242af5fffe,25,X,,,2026-04-06 04:34:50.937144,,,,,,,,,,,,,,,,,,,,,,,
+users,1589138d7418486e8d10a8fc1ad5aef6,25,X,,,2026-04-06 04:43:54.567762,,,,,,,,,,,,,,,,,,,,,,,
+users,b163bb4ff0c242849516439a9ded9921,,,,,2026-04-06 04:58:32.213220,,,,,,,,,,,,,,,,,,,,,,,
+users,c3b73e5251ad4c74a85b3cfa43351b86,,,,,2026-04-06 05:03:15.955544,,,,,,,,,,,,,,,,,,,,,,,
+users,8e68850d2a0d4708be3910e159cc9f47,,,,,2026-04-06 05:04:00.477266,,,,,,,,,,,,,,,,,,,,,,,
+users,23f9980666cf46af9ee6cebdf261837c,,,,,2026-04-06 05:08:01.078760,,,,,,,,,,,,,,,,,,,,,,,
+users,58f7b9ba88464a368447b8897419045a,29,F,Paris,French,2026-04-06 09:32:24.034329,,,,,,,,,,,,,,,,,,,,,,,
+users,41f474e2a0d943efb9370145edbc4bc0,,,,,2026-04-06 09:43:52.792258,,,,,,,,,,,,,,,,,,,,,,,
+users,a61d826f0a4042c5b2e34b7afad205af,,,,,2026-04-06 09:50:04.706203,,,,,,,,,,,,,,,,,,,,,,,
+users,cc6a84ced94749518f8f8d2d0d15660f,27,F,Lille,French,2026-04-06 10:29:37.821965,,,,,,,,,,,,,,,,,,,,,,,
+users,495a702377ce43dcac1ac0682954e220,26,F,Lille,French,2026-04-06 10:40:05.436309,,,,,,,,,,,,,,,,,,,,,,,
+users,77b1cb56a8644c9fbc2e8f810fdbe915,32,M,Paris,French,2026-04-06 10:43:01.534011,,,,,,,,,,,,,,,,,,,,,,,
+sessions,f506fed9fce74250960fedb3bf9f74cf,,,,,,74ae877bf9bc4b17be467062babe94f3,900000.0,960000.0,,Declined,in_progress,,2026-04-06 04:14:15.991544,2026-04-06 04:14:16.159632,0.1680135726928711,5,,,,,,,,,,,,
+sessions,bf23bb1dad714f5ca7b0ddc48bc28752,,,,,,a5914b4e9bdb49ffb112e2c36b310167,900000.0,,,,in_progress,,2026-04-06 04:28:48.229022,,,1,,,,,,,,,,,,
+sessions,4221ee8131b540b8b69d87242af5fffe,,,,,,682123a815234446b7480dc4f9b558f2,900000.0,,,,in_progress,,2026-04-06 04:34:51.062293,,,1,,,,,,,,,,,,
+sessions,1589138d7418486e8d10a8fc1ad5aef6,,,,,,009a1d592ea54c7bb86ccb1c1516c9e6,900000.0,,,,in_progress,,2026-04-06 04:43:54.610828,,,1,,,,,,,,,,,,
+sessions,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,900000.0,,,,in_progress,,2026-04-06 04:58:32.274020,,,5,,,,,,,,,,,,
+sessions,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,900000.0,955000.0,,Declined,in_progress,,2026-04-06 05:03:16.005085,2026-04-06 05:03:16.679721,0.6750315427780151,5,,,,,,,,,,,,
+sessions,8e68850d2a0d4708be3910e159cc9f47,,,,,,fce92a97d4544b228278e8ddce2c7c77,90000.0,,,,in_progress,,2026-04-06 05:04:00.601598,,,1,,,,,,,,,,,,
+sessions,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,90000.0,799999.0,,Declined,in_progress,,2026-04-06 05:08:01.226470,2026-04-06 05:14:35.017765,393.79198998212814,5,,,,,,,,,,,,
+sessions,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,900000.0,950000.0,,Declined,in_progress,,2026-04-06 09:32:24.090981,2026-04-06 09:32:24.562636,0.4720151424407959,5,,,,,,,,,,,,
+sessions,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,90000.0,,,,in_progress,,2026-04-06 09:43:52.898673,,,4,,,,,,,,,,,,
+sessions,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,90000.0,1030000.0,1030000.0,Accepted,in_progress,,2026-04-06 09:50:04.775814,2026-04-06 10:01:52.180013,707.4039682745934,5,,,,,,,,,,,,
+sessions,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,900000.0,912500.0,912500.0,Accepted,completed,after_offer,2026-04-06 10:29:37.885336,2026-04-06 10:29:38.861778,0.9769812226295471,5,,,,,,,,,,,,
+sessions,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,900000.0,910000.0,910000.0,Accepted,completed,after_offer,2026-04-06 10:40:05.469655,2026-04-06 10:40:06.140242,0.6700024008750916,5,,,,,,,,,,,,
+sessions,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,910000.0,917500.0,,Declined,completed,after_offer,2026-04-06 10:43:01.579980,2026-04-06 10:43:02.230145,0.6500065326690674,5,,,,,,,,,,,,
+turns,bf23bb1dad714f5ca7b0ddc48bc28752,,,,,,a5914b4e9bdb49ffb112e2c36b310167,,,,,,,,,,,1,Human,I can do 900000,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,bf23bb1dad714f5ca7b0ddc48bc28752,,,,,,a5914b4e9bdb49ffb112e2c36b310167,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,4221ee8131b540b8b69d87242af5fffe,,,,,,682123a815234446b7480dc4f9b558f2,,,,,,,,,,,1,Human,I can do 900k,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,4221ee8131b540b8b69d87242af5fffe,,,,,,682123a815234446b7480dc4f9b558f2,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,1589138d7418486e8d10a8fc1ad5aef6,,,,,,009a1d592ea54c7bb86ccb1c1516c9e6,,,,,,,,,,,1,Human,hello offer 900k,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,1589138d7418486e8d10a8fc1ad5aef6,,,,,,009a1d592ea54c7bb86ccb1c1516c9e6,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,1,Human,turn 1,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,2,Human,turn 2,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,3,Human,turn 3,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,4,Human,turn 4,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,5,Human,turn 5,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,b163bb4ff0c242849516439a9ded9921,,,,,,79002708ea614e9ca021e23c31a608a6,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,1,Human,turn 1,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,2,Human,turn 2,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,3,Human,turn 3,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,4,Human,turn 4,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,5,Human,turn 5,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,c3b73e5251ad4c74a85b3cfa43351b86,,,,,,052a932b98bd4822ae779ee5924dc57a,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,8e68850d2a0d4708be3910e159cc9f47,,,,,,fce92a97d4544b228278e8ddce2c7c77,,,,,,,,,,,1,Human,how,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,8e68850d2a0d4708be3910e159cc9f47,,,,,,fce92a97d4544b228278e8ddce2c7c77,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,1,Human,i want it,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,2,Human,why,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,3,Human,ok,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,4,Human,ttt,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,5,Human,hh,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,23f9980666cf46af9ee6cebdf261837c,,,,,,47e1af81d37a4be7b77137458ab25443,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,1,Human,merge check turn 1,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,2,Human,merge check turn 2,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,3,Human,merge check turn 3,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,4,Human,merge check turn 4,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,5,Human,merge check turn 5,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,58f7b9ba88464a368447b8897419045a,,,,,,af5abfeff0764a909d899e21068bb212,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,1,Human,i like it,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,2,Human,i want it,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,3,Human,800,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,4,Human,yuo,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,41f474e2a0d943efb9370145edbc4bc0,,,,,,619e7101e92e4f7aaf06403f159f1121,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,1,Human,yu,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,2,Human,jbbu,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,3,Human,kknu,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,4,Human,hjb,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,5,Human,ok,,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,a61d826f0a4042c5b2e34b7afad205af,,,,,,cf5a9f140efe474f8f4eb912553c9413,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",,,0,0,,0,neutral,neutral,2026-04-06 10:25:11.529111
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,1,Human,qc turn 1,902500.0,,1,0,,9,neutral,neutral,2026-04-06 10:29:37.941284
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",1120000.0,-217500.0,1,1,0.048781,36,neutral,neutral,2026-04-06 10:29:37.990765
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,2,Human,qc turn 2,905000.0,215000.0,1,1,0.08287,9,neutral,neutral,2026-04-06 10:29:38.074248
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",1090000.0,-185000.0,1,1,0.056103,36,neutral,neutral,2026-04-06 10:29:38.131063
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,3,Human,qc turn 3,907500.0,182500.0,1,1,0.087049,9,neutral,neutral,2026-04-06 10:29:38.218888
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",1060000.0,-152500.0,1,1,0.128223,36,neutral,neutral,2026-04-06 10:29:38.347959
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,4,Human,qc turn 4,910000.0,150000.0,1,1,0.1744,9,neutral,neutral,2026-04-06 10:29:38.523130
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",1030000.0,-120000.0,1,1,0.051118,36,neutral,neutral,2026-04-06 10:29:38.574955
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,5,Human,qc turn 5,912500.0,117500.0,1,1,0.132733,9,neutral,neutral,2026-04-06 10:29:38.708746
+turns,cc6a84ced94749518f8f8d2d0d15660f,,,,,,c02b6dfd97484dc88e7bd06500347e06,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",1000000.0,-87500.0,1,1,0.052276,36,neutral,neutral,2026-04-06 10:29:38.761771
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,1,Human,turn 1,902000.0,,1,0,,6,neutral,neutral,2026-04-06 10:40:05.506099
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",1120000.0,-218000.0,1,1,0.052812,36,neutral,neutral,2026-04-06 10:40:05.559589
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,2,Human,turn 2,904000.0,216000.0,1,1,0.068151,6,neutral,neutral,2026-04-06 10:40:05.628405
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",1090000.0,-186000.0,1,1,0.048092,36,neutral,neutral,2026-04-06 10:40:05.677166
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,3,Human,turn 3,906000.0,184000.0,1,1,0.062431,6,neutral,neutral,2026-04-06 10:40:05.740223
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",1060000.0,-154000.0,1,1,0.046804,36,neutral,neutral,2026-04-06 10:40:05.787842
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,4,Human,turn 4,908000.0,152000.0,1,1,0.070963,6,neutral,neutral,2026-04-06 10:40:05.859440
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",1030000.0,-122000.0,1,1,0.117474,36,neutral,neutral,2026-04-06 10:40:05.977640
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,5,Human,turn 5,910000.0,120000.0,1,1,0.062529,6,neutral,neutral,2026-04-06 10:40:06.040945
+turns,495a702377ce43dcac1ac0682954e220,,,,,,f19381c7687a4ec3a0c91730989bd97d,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",1000000.0,-90000.0,1,1,0.045333,36,neutral,neutral,2026-04-06 10:40:06.086918
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,1,Human,ui-check turn 1,911500.0,,1,0,,15,neutral,neutral,2026-04-06 10:43:01.620612
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,1,AI,"I can move to $1,120,000 this round.",1120000.0,-208500.0,1,1,0.074685,36,neutral,neutral,2026-04-06 10:43:01.696123
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,2,Human,ui-check turn 2,913000.0,207000.0,1,1,0.067489,15,neutral,neutral,2026-04-06 10:43:01.764365
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,2,AI,"I can move to $1,090,000 this round.",1090000.0,-177000.0,1,1,0.046955,36,neutral,neutral,2026-04-06 10:43:01.812078
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,3,Human,ui-check turn 3,914500.0,175500.0,1,1,0.070981,15,neutral,neutral,2026-04-06 10:43:01.883783
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,3,AI,"I can move to $1,060,000 this round.",1060000.0,-145500.0,1,1,0.047166,36,neutral,neutral,2026-04-06 10:43:01.931631
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,4,Human,ui-check turn 4,916000.0,144000.0,1,1,0.068424,15,neutral,neutral,2026-04-06 10:43:02.000699
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,4,AI,"I can move to $1,030,000 this round.",1030000.0,-114000.0,1,1,0.050111,36,neutral,neutral,2026-04-06 10:43:02.051690
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,5,Human,ui-check turn 5,917500.0,112500.0,1,1,0.069454,15,neutral,neutral,2026-04-06 10:43:02.121873
+turns,77b1cb56a8644c9fbc2e8f810fdbe915,,,,,,6472387d42584af39c58e2485603b7f1,,,,,,,,,,,5,AI,"I can move to $1,000,000 this round.",1000000.0,-82500.0,1,1,0.05094,36,neutral,neutral,2026-04-06 10:43:02.173568

@@ -33,3 +33,20 @@ class OpenAIServiceParsingTests(SimpleTestCase):
     def test_extract_offer_not_found(self):
         offer = self.service.extract_offer_from_message("I need to think about it.")
         self.assertIsNone(offer)
+
+    def test_call_openai_api_uses_fallback_when_client_missing(self):
+        service = OpenAIService.__new__(OpenAIService)
+        service.client = None
+        service.model = "gpt-4.1-mini"
+        service.timeout_seconds = 5
+        service.max_retries = 1
+
+        result = service.call_openai_api(
+            [
+                {"role": "system", "content": "Current turn: 2/5"},
+                {"role": "user", "content": "My offer is $900,000"},
+            ]
+        )
+
+        self.assertIn("$", result.message)
+        self.assertGreater(result.offer, 0)

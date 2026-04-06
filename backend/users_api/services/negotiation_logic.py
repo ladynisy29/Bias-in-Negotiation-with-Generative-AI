@@ -1,5 +1,6 @@
 from collections import defaultdict
 from dataclasses import asdict, dataclass
+from typing import Literal
 
 from django.db.models import Avg, Max, Min
 from django.utils import timezone
@@ -16,6 +17,11 @@ class NegotiationTurnResult:
     ai_reasoning: str
     ai_offer: float
     turn_count: int
+    outcome: str | None = None
+    final_price: float | None = None
+    human_profit: float | None = None
+    ai_profit: float | None = None
+    acceptance_threshold: float | None = None
 
 
 class NegotiationLogicService:
@@ -30,7 +36,16 @@ class NegotiationLogicService:
             raise ValidationError({"turn_count": "Maximum turns reached."})
 
         turn_number = session.turn_count + 1
-        self._create_dialogue_turn(session, turn_number, "Human", message, float(offer), None)
+        self._create_dialogue_turn(
+            session=session,
+            turn_number=turn_number,
+            speaker="Human",
+            message=message,
+            extracted_offer=float(offer),
+            reasoning=None,
+            offer_amount=float(offer),
+            is_counter_offer=turn_number > 1,
+        )
         self._create_offer_history(session, turn_number, float(offer), "Human")
 
         conversation_history = self._get_conversation_history(session)
@@ -48,17 +63,38 @@ class NegotiationLogicService:
             ai_response.message,
             ai_offer,
             ai_response.reasoning,
+            offer_amount=ai_offer,
+            is_counter_offer=True,
         )
         self._create_offer_history(session, turn_number, ai_offer, "AI")
 
         session.turn_count = turn_number
-        session.save(update_fields=["turn_count"])
+        response_outcome = None
+        response_final_price = None
+        response_human_profit = None
+        response_ai_profit = None
+        response_acceptance_threshold = None
+
+        if turn_number == 5:
+            final_result = self.evaluate_final_offer(session, float(offer))
+            response_outcome = final_result["outcome"]
+            response_final_price = final_result["final_price"]
+            response_human_profit = final_result["human_profit"]
+            response_ai_profit = final_result["ai_profit"]
+            response_acceptance_threshold = final_result["acceptance_threshold"]
+        else:
+            session.save(update_fields=["turn_count"])
 
         result = NegotiationTurnResult(
             ai_message=ai_response.message,
             ai_reasoning=ai_response.reasoning,
             ai_offer=ai_offer,
             turn_count=session.turn_count,
+            outcome=response_outcome,
+            final_price=response_final_price,
+            human_profit=response_human_profit,
+            ai_profit=response_ai_profit,
+            acceptance_threshold=response_acceptance_threshold,
         )
         return asdict(result)
 
@@ -70,15 +106,67 @@ class NegotiationLogicService:
         message: str,
         extracted_offer: float | None,
         reasoning: str | None,
+        offer_amount: float | None = None,
+        is_counter_offer: bool = False,
     ) -> DialogueTurn:
+        previous_offer = (
+            DialogueTurn.objects.filter(session=session, offer_made=True)
+            .order_by("-timestamp")
+            .values_list("offer_amount", flat=True)
+            .first()
+        )
+
+        concession_amount = None
+        if previous_offer is not None and offer_amount is not None:
+            concession_amount = previous_offer - offer_amount
+
+        previous_turn_of_other_speaker = (
+            DialogueTurn.objects.filter(session=session)
+            .exclude(speaker=speaker)
+            .order_by("-timestamp")
+            .first()
+        )
+        response_time_seconds = None
+        if previous_turn_of_other_speaker:
+            response_time_seconds = max(
+                0.0,
+                (timezone.now() - previous_turn_of_other_speaker.timestamp).total_seconds(),
+            )
+
         return DialogueTurn.objects.create(
             session=session,
             turn_number=turn_number,
             speaker=speaker,
             message=message,
+            offer_made=offer_amount is not None,
+            is_counter_offer=is_counter_offer,
+            offer_amount=offer_amount,
+            concession_amount=concession_amount,
+            response_time_seconds=response_time_seconds,
+            message_length=len(message),
+            sentiment=self._infer_sentiment(message),
+            strategy_tag=self._infer_strategy(message),
             extracted_offer=extracted_offer,
             reasoning=reasoning,
         )
+
+    def _infer_sentiment(self, message: str) -> Literal["positive", "neutral", "negative"]:
+        text = message.lower()
+        positive_words = ("agree", "great", "deal", "good", "thanks")
+        negative_words = ("no", "can't", "cannot", "refuse", "impossible")
+        if any(token in text for token in positive_words):
+            return "positive"
+        if any(token in text for token in negative_words):
+            return "negative"
+        return "neutral"
+
+    def _infer_strategy(self, message: str) -> Literal["aggressive", "cooperative", "neutral"]:
+        text = message.lower()
+        if any(token in text for token in ("final", "must", "non-negotiable", "take it")):
+            return "aggressive"
+        if any(token in text for token in ("flexible", "let's", "can we", "happy")):
+            return "cooperative"
+        return "neutral"
 
     def _create_offer_history(
         self,
@@ -118,16 +206,25 @@ class NegotiationLogicService:
                 "turn_number": item.turn_number,
                 "speaker": item.speaker,
                 "message": item.message,
+                "offer_made": item.offer_made,
+                "is_counter_offer": item.is_counter_offer,
+                "offer_amount": item.offer_amount,
+                "concession_amount": item.concession_amount,
+                "response_time_seconds": item.response_time_seconds,
+                "message_length": item.message_length,
+                "sentiment": item.sentiment,
+                "strategy_tag": item.strategy_tag,
                 "extracted_offer": item.extracted_offer,
                 "reasoning": item.reasoning,
+                "timestamp": item.timestamp.isoformat(),
                 "created_at": item.created_at.isoformat(),
             }
             for item in turns
         ]
 
     def calculate_concession_pattern(self, session: NegotiationSession) -> dict:
-        offers = OfferHistory.objects.filter(session=session).order_by("turn_number", "created_at")
-        concession_values = [row.concession_amount for row in offers if row.concession_amount is not None]
+        turns = DialogueTurn.objects.filter(session=session, offer_made=True).order_by("turn_number", "created_at")
+        concession_values = [row.concession_amount for row in turns if row.concession_amount is not None]
 
         average = sum(concession_values) / len(concession_values) if concession_values else 0
         direction_counts = defaultdict(int)
@@ -146,21 +243,29 @@ class NegotiationLogicService:
         }
 
     def offer_progression(self, session: NegotiationSession) -> list[dict]:
-        offers = OfferHistory.objects.filter(session=session).order_by("turn_number", "created_at")
+        offers = DialogueTurn.objects.filter(session=session, offer_made=True).order_by("turn_number", "created_at")
         return [
             {
                 "turn_number": item.turn_number,
                 "speaker": item.speaker,
                 "offer_amount": item.offer_amount,
                 "concession_amount": item.concession_amount,
-                "concession_percentage": item.concession_percentage,
+                "concession_percentage": (
+                    ((item.concession_amount / (item.offer_amount + item.concession_amount)) * 100)
+                    if item.concession_amount is not None
+                    and item.offer_amount is not None
+                    and (item.offer_amount + item.concession_amount) not in (0, None)
+                    else None
+                ),
+                "is_counter_offer": item.is_counter_offer,
+                "timestamp": item.timestamp.isoformat(),
                 "created_at": item.created_at.isoformat(),
             }
             for item in offers
         ]
 
     def session_summary_statistics(self, session: NegotiationSession) -> dict:
-        offers = OfferHistory.objects.filter(session=session)
+        offers = DialogueTurn.objects.filter(session=session, offer_made=True)
         aggregates = offers.aggregate(
             min_offer=Min("offer_amount"),
             max_offer=Max("offer_amount"),
@@ -191,8 +296,13 @@ class NegotiationLogicService:
         threshold = session.ai_reservation_price * 0.95
         accepted = float(final_offer) >= threshold
 
+        # Ensure terminal turn state is persisted when finalizing from the 5th chat turn.
+        session.turn_count = max(session.turn_count, 5)
+
         session.final_offer = float(final_offer)
         session.outcome = "Accepted" if accepted else "Declined"
+        session.session_status = "completed"
+        session.dropoff_stage = "after_offer"
         session.final_price = float(final_offer) if accepted else None
 
         BUYER_RESERVATION_PRICE = 25_000_000
@@ -206,14 +316,19 @@ class NegotiationLogicService:
         session.ended_at = timezone.now()
         session.save(
             update_fields=[
+                "turn_count",
                 "final_offer",
                 "final_price",
                 "outcome",
+                "session_status",
+                "dropoff_stage",
                 "human_profit",
                 "ai_profit",
                 "ended_at",
             ]
         )
+
+        self.validate_session_integrity(session)
 
         return {
             "outcome": session.outcome,
@@ -222,3 +337,19 @@ class NegotiationLogicService:
             "ai_profit": session.ai_profit,
             "acceptance_threshold": threshold,
         }
+
+    def validate_session_integrity(self, session: NegotiationSession) -> None:
+        missing = {}
+        if session.outcome is None:
+            missing["session_outcome"] = "Missing required outcome."
+        if session.final_offer is None:
+            missing["session_final_offer"] = "Missing required final_offer."
+        if session.ended_at is None:
+            missing["session_ended_at"] = "Missing required ended_at timestamp."
+
+        for turn in range(1, session.turn_count + 1):
+            if not DialogueTurn.objects.filter(session=session, turn_number=turn).exists():
+                missing[f"turn_{turn}"] = "Missing at least one message for this turn."
+
+        if missing:
+            raise ValidationError({"session_integrity": missing})

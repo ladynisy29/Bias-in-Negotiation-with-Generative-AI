@@ -7,7 +7,7 @@ from typing import Any
 from django.conf import settings
 from openai import OpenAI
 from openai import APIConnectionError, APITimeoutError, RateLimitError
-from rest_framework.exceptions import APIException, ValidationError
+from rest_framework.exceptions import ValidationError
 
 
 SYSTEM_PROMPT = (
@@ -41,7 +41,7 @@ class OpenAIService:
 
     def call_openai_api(self, messages: list[dict[str, str]]) -> AIResponse:
         if not self.client:
-            raise APIException("OPENAI_API_KEY is missing.")
+            return self._fallback_response(messages)
 
         last_error: Exception | None = None
         for attempt in range(self.max_retries):
@@ -69,7 +69,35 @@ class OpenAIService:
                 last_error = exc
                 break
 
-        raise APIException(f"AI service temporarily unavailable: {last_error}")
+        return self._fallback_response(messages, reason=f"OpenAI unavailable: {last_error}")
+
+    def _fallback_response(self, messages: list[dict[str, str]], reason: str | None = None) -> AIResponse:
+        user_messages = [item.get("content", "") for item in messages if item.get("role") == "user"]
+        latest_user_message = user_messages[-1] if user_messages else ""
+        latest_offer = self.extract_offer_from_message(latest_user_message) or 900_000
+
+        turn_number = 1
+        for item in messages:
+            content = str(item.get("content", ""))
+            turn_match = re.search(r"Current turn:\s*(\d+)/5", content)
+            if turn_match:
+                turn_number = int(turn_match.group(1))
+                break
+
+        anchor_offer = 1_120_000 - ((turn_number - 1) * 30_000)
+        ai_offer = max(anchor_offer, latest_offer * 1.02)
+        ai_offer = max(1.0, round(ai_offer, 2))
+
+        fallback_reason = (
+            reason
+            if reason
+            else "Deterministic fallback mode (no OpenAI key configured)."
+        )
+        return AIResponse(
+            message=f"I can move to ${ai_offer:,.0f} this round.",
+            reasoning=fallback_reason,
+            offer=ai_offer,
+        )
 
     def parse_ai_response(self, raw_response: str) -> dict[str, Any]:
         try:

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Negotiation Chat - AI Negotiation</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/chat.css">
+</head>
+<body>
+  <nav>
+    <a href="BaseLayout.html" class="logo">AI Negotiation</a>
+    <button class="hamburger" aria-label="Toggle navigation menu" onclick="appLayout.toggleNavigation()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul>
+      <li><a href="BaseLayout.html">Home</a></li>
+      <li><a href="Chat.html">Chat</a></li>
+      <li><button type="button" class="btn-secondary" onclick="appLayout.toggleTheme()">Theme</button></li>
+    </ul>
+  </nav>
+
+  <main class="chat-shell">
+    <section class="chat-panel">
+      <header class="chat-header">
+        <h2>Live Negotiation</h2>
+        <span id="turn-counter" class="turn-counter">0/5</span>
+      </header>
+      <div id="messages" class="chat-messages"></div>
+      <div id="typing-indicator" class="typing-indicator hidden">AI is typing...</div>
+      <form id="message-form" class="chat-form">
+        <input id="message-input" type="text" maxlength="2000" placeholder="Type your message" required />
+        <input id="offer-input" type="number" min="1" placeholder="Offer amount" required />
+        <button id="send-button" type="submit" class="btn-primary">Send</button>
+      </form>
+      <p id="chat-error" class="error-msg hidden"></p>
+    </section>
+
+    <aside class="side-panel">
+      <section class="offer-history">
+        <h3>Offer History</h3>
+        <ul id="offer-history-list" class="offer-history-list"></ul>
+      </section>
+    </aside>
+  </main>
+
+  <footer>Junia - M1 Research Project 2026 | AI and Negotiation Bias Study</footer>
+
+  <script src="./BaseLayout.js"></script>
+  <script type="module" src="./Chat.js"></script>
+</body>
+</html>
