@@ -48,13 +48,13 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.getenv("DB_NAME", str(BASE_DIR / "db.sqlite3")),
-        "USER": os.getenv("DB_USER", ""),
-        "PASSWORD": os.getenv("DB_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", ""),
-        "PORT": os.getenv("DB_PORT", ""),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ai_negotiation_db',
+        'USER': 'postgres',
+        'PASSWORD': 'ainegotiation',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
