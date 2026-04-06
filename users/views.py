@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import NegotiationSession, DialogueTurn, OfferHistory
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 BUYER_RESERVATION_PRICE = 25_000_000
 
@@ -141,3 +143,52 @@ def submit_final_offer(request, session_id):
         'session_id': session.pk,
         'ended_at': session.ended_at.isoformat(),
     }, status=200)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def SignupView(request):
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return JsonResponse({'error': 'Username and password required'}, status=400)
+
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'User already exists'}, status=400)
+
+        user = User.objects.create_user(username=username, password=password)
+
+        return JsonResponse({'message': 'User created successfully'}, status=201)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def LoginView(request):
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is None:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+
+        login(request, user)
+
+        return JsonResponse({'message': 'Login successful'})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+@csrf_exempt
+@login_required
+@require_http_methods(["POST"])
+def submit_final_offer(request, session_id):
+    return JsonResponse({'message': 'Final offer submitted'}, status=200)

@@ -50,10 +50,10 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ai_negotiation_db',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'ainegotiation',
-        'HOST': 'localhost',
+        'PASSWORD': 'bias-juniaai',
+        'HOST': 'db.lyhnphkhwwejtgljuuam.supabase.co',
         'PORT': '5432',
     }
 }
