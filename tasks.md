@@ -2,19 +2,19 @@
 
 ## Phase 1: Backend Setup & Database
 
-- [ ] 1.1 Initialize Django project and app structure
-- [ ] 1.2 Configure PostgreSQL database connection
-- [ ] 1.3 Create UserProfile model with demographics fields
-- [ ] 1.4 Create NegotiationSession model with all required fields
-- [ ] 1.5 Create DialogueTurn model for conversation history
-- [ ] 1.6 Create OfferHistory model for offer tracking
-- [ ] 1.7 Run migrations and verify database schema
+- [x] 1.1 Initialize Django project and app structure
+- [x] 1.2 Configure PostgreSQL database connection
+- [x] 1.3 Create UserProfile model with demographics fields
+- [x] 1.4 Create NegotiationSession model with all required fields
+- [x] 1.5 Create DialogueTurn model for conversation history
+- [x] 1.6 Create OfferHistory model for offer tracking
+- [x] 1.7 Run migrations and verify database schema
 - [ ] 1.8 Create database indexes for performance optimization
 
 ## Phase 2: Authentication & User Management
 
-- [ ] 2.1 Implement user registration endpoint (POST /register)
-- [ ] 2.2 Implement user login endpoint (POST /login)
+- [x] 2.1 Implement user registration endpoint (POST /register)
+- [x] 2.2 Implement user login endpoint (POST /login)
 - [ ] 2.3 Implement session token generation and validation
 - [ ] 2.4 Implement session token expiration (24 hours)
 - [ ] 2.5 Create authentication middleware for request validation
