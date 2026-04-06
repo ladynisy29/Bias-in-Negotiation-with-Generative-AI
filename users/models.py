@@ -1,7 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 import random
+import uuid
 
+class UserSession(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=64, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def generate_token(self):
+        self.token = uuid.uuid4().hex
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -50,6 +58,12 @@ class NegotiationSession(models.Model):
     def __str__(self):
         return f"Session #{self.pk} - {self.user.username} - {self.status}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['status']),
+            models.Index(fields=['created_at']),
+        ]
 
 class DialogueTurn(models.Model):
     session = models.ForeignKey(NegotiationSession, on_delete=models.CASCADE, related_name='turns')
@@ -61,6 +75,11 @@ class DialogueTurn(models.Model):
     def __str__(self):
         return f"Turn {self.turn_number} - {self.speaker}: {self.message[:30]}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['session']),
+            models.Index(fields=['turn_number']),
+        ]
 
 class OfferHistory(models.Model):
     session = models.ForeignKey(NegotiationSession, on_delete=models.CASCADE, related_name='offers')
@@ -71,5 +90,12 @@ class OfferHistory(models.Model):
     concession_percentage = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
     def __str__(self):
         return f"{self.sender}: {self.offer_value} (turn {self.turn_number})"
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['session']),
+            models.Index(fields=['turn_number']),
+        ]

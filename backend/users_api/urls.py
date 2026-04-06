@@ -12,6 +12,8 @@ from users_api.views.session_views import (
     SubmitFinalOfferView,
 )
 
+import users.views.auth_views
+
 urlpatterns = [
     path("start-session", StartSessionView.as_view(), name="start-session"),
     path("session/<uuid:session_id>", SessionDetailView.as_view(), name="session-detail"),
@@ -21,4 +23,5 @@ urlpatterns = [
     path("export/sessions", ExportSessionsCsvView.as_view(), name="export-sessions"),
     path("export/session/<uuid:session_id>/transcript", ExportTranscriptView.as_view(), name="export-transcript"),
     path("export/profit-analysis", ExportProfitAnalysisView.as_view(), name="export-profit-analysis"),
+    path("register/", RegisterView.as_view(), name="register"),
 ]
