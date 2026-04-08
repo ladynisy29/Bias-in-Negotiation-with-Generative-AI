@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Negotiation — AI Negotiation</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+  <nav>
+    <a href="start-session.html" class="logo">🧠 AI Negotiation</a>
+    <button class="hamburger" aria-label="Toggle navigation menu" onclick="document.querySelector('nav ul').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul>
+      <li><a href="start-session.html">Home</a></li>
+      <li><a href="start-session.html">New Session</a></li>
+      <li><a href="#" id="nav-export">Export Data</a></li>
+    </ul>
+  </nav>
+
+  <main id="content">
+    <div class="container" style="max-width: 800px; margin: 40px auto;">
+      <h1 class="mb-3">Start a New Negotiation</h1>
+
+      <section class="scenario-card">
+        <h2>📋 Your Mission</h2>
+        <p>You are a real estate buyer looking to purchase a property. The seller has a minimum price in mind — your goal is to negotiate the best deal possible. You have <strong>5 turns</strong> to exchange messages. After turn 5, you must submit your final offer.</p>
+        <ul class="rules-list" role="list">
+          <li>🔄 5 turns maximum</li>
+          <li>💬 Each turn: send a message + propose a price</li>
+          <li>🎯 Final offer submitted after turn 5</li>
+          <li>📊 All data recorded for research</li>
+        </ul>
+      </section>
+
+      <div class="card">
+        <form id="start-form" novalidate>
+          <div class="form-group">
+            <label for="initial-offer">Your Opening Offer (€)</label>
+            <input type="number" id="initial-offer" name="initial_offer" min="500000" max="1500000" step="1000" placeholder="e.g. 900000" required aria-describedby="offer-helper">
+            <p class="helper-text" id="offer-helper">Tip: The property is valued between €850,000 and €1,150,000</p>
+          </div>
+
+          <button type="submit" id="start-btn" class="btn-primary btn-large btn-full">Start Negotiation →</button>
+        </form>
+
+        <div id="start-error" class="error-msg hidden"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Junia — M1 Research Project 2026 | AI &amp; Negotiation Bias Study
+  </footer>
+
+  <div id="modal-overlay" class="hidden"></div>
+
+</body>
+</html>
