@@ -7,6 +7,7 @@ from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
 from users_api.models import DialogueTurn, NegotiationSession, OfferHistory
+from users_api.services.data_export import export_all_collected_data_csv
 from users_api.services.openai_service import OpenAIService
 from users_api.services.validators import validate_message, validate_positive_number
 
@@ -329,6 +330,12 @@ class NegotiationLogicService:
         )
 
         self.validate_session_integrity(session)
+
+        # Keep a continuously fresh one-file export without manual command execution.
+        try:
+            export_all_collected_data_csv()
+        except Exception:
+            pass
 
         return {
             "outcome": session.outcome,

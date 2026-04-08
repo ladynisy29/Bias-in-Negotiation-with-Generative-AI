@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users_api.models import NegotiationSession, UserProfile
+from users_api.services.data_export import export_all_collected_data_csv
 from users_api.services.negotiation_logic import NegotiationLogicService
 from users_api.services.validators import validate_positive_number
 
@@ -148,6 +149,11 @@ class AbandonSessionView(APIView):
                 "ai_profit",
             ]
         )
+
+        try:
+            export_all_collected_data_csv()
+        except Exception:
+            pass
 
         return Response(
             {
