@@ -79,10 +79,46 @@
 
 .chat-form {
   display: grid;
-  grid-template-columns: 1fr 180px auto;
-  gap: 10px;
+  grid-template-columns: minmax(280px, 2fr) minmax(180px, 1fr) auto;
+  align-items: end;
+  gap: 12px;
   padding: 14px;
   border-top: 1px solid var(--color-border);
+}
+
+.chat-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.reason-group textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.offer-group input {
+  height: 44px;
+}
+
+.chat-input-actions {
+  display: flex;
+  align-items: end;
+}
+
+.chat-input-actions .btn-primary {
+  min-width: 130px;
+  height: 44px;
+}
+
+#chat-error {
+  grid-column: 1 / -1;
+  margin-top: 0;
 }
 
 .typing-indicator {
@@ -141,6 +177,10 @@
 
   .chat-form {
     grid-template-columns: 1fr;
+  }
+
+  .chat-input-actions .btn-primary {
+    width: 100%;
   }
 
   .offer-history-list {

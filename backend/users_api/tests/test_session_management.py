@@ -3,7 +3,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from users_api.models import NegotiationSession, UserProfile
+from users_api.auth import create_access_token
+from users_api.models import DialogueTurn, NegotiationSession, UserProfile
 
 
 class SessionManagementTests(TestCase):
@@ -25,11 +26,17 @@ class SessionManagementTests(TestCase):
             education_level="bachelor",
             negotiation_experience="none",
         )
+        self.user1_token, _ = create_access_token(self.user1)
+        self.user2_token, _ = create_access_token(self.user2)
+
+    def _auth(self, token):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
     def test_start_session_creates_session_and_random_rp(self):
+        self._auth(self.user1_token)
         response = self.client.post(
             reverse("start-session"),
-            {"user_id": str(self.user1.user_id), "initial_offer": 900000},
+            {},
             format="json",
         )
 
@@ -38,8 +45,14 @@ class SessionManagementTests(TestCase):
         self.assertGreaterEqual(session.ai_reservation_price, 850000)
         self.assertLessEqual(session.ai_reservation_price, 1150000)
         self.assertEqual(session.turn_count, 0)
+        self.assertIn("ai_greeting", response.data)
+
+        greeting_turn = DialogueTurn.objects.filter(session=session, turn_number=0, speaker="AI").first()
+        self.assertIsNotNone(greeting_turn)
+        self.assertEqual(greeting_turn.message, response.data["ai_greeting"])
 
     def test_start_session_rejects_second_active_session(self):
+        self._auth(self.user1_token)
         NegotiationSession.objects.create(
             user=self.user1,
             ai_reservation_price=900000,
@@ -49,7 +62,7 @@ class SessionManagementTests(TestCase):
 
         response = self.client.post(
             reverse("start-session"),
-            {"user_id": str(self.user1.user_id), "initial_offer": 900000},
+            {},
             format="json",
         )
 
@@ -57,6 +70,7 @@ class SessionManagementTests(TestCase):
         self.assertIn("session", response.data)
 
     def test_session_detail_respects_isolation(self):
+        self._auth(self.user2_token)
         session = NegotiationSession.objects.create(
             user=self.user1,
             ai_reservation_price=900000,
@@ -66,11 +80,11 @@ class SessionManagementTests(TestCase):
 
         response = self.client.get(
             reverse("session-detail", kwargs={"session_id": session.session_id}),
-            {"user_id": str(self.user2.user_id)},
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_send_message_respects_isolation(self):
+        self._auth(self.user2_token)
         session = NegotiationSession.objects.create(
             user=self.user1,
             ai_reservation_price=900000,
@@ -80,7 +94,7 @@ class SessionManagementTests(TestCase):
 
         response = self.client.post(
             reverse("send-message", kwargs={"session_id": session.session_id}),
-            {"user_id": str(self.user2.user_id), "message": "Hello", "offer": 900000},
+            {"message": "Hello", "offer": 900000},
             format="json",
         )
 

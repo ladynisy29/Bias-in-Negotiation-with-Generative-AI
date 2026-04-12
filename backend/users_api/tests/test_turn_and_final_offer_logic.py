@@ -6,7 +6,7 @@ from users_api.services.negotiation_logic import NegotiationLogicService
 
 
 class FakeOpenAIService:
-    def build_messages(self, conversation_history, turn_number):
+    def build_messages(self, conversation_history, turn_number, latest_offer=None):
         return []
 
     def call_openai_api(self, messages):
@@ -57,6 +57,16 @@ class TurnAndFinalOfferLogicTests(TestCase):
         self.session.refresh_from_db()
         self.assertEqual(self.session.turn_count, 1)
 
+    def test_first_user_offer_sets_initial_offer(self):
+        self.session.initial_offer = 0
+        self.session.turn_count = 0
+        self.session.save(update_fields=["initial_offer", "turn_count"])
+
+        self.logic.process_message(self.session, "First turn", 245000)
+        self.session.refresh_from_db()
+
+        self.assertEqual(self.session.initial_offer, 245000)
+
     def test_turn_rejection_after_five_turns(self):
         self.session.turn_count = 5
         self.session.save(update_fields=["turn_count"])
@@ -69,16 +79,16 @@ class TurnAndFinalOfferLogicTests(TestCase):
         self.session.save(update_fields=["turn_count"])
         self._seed_turns(5)
 
-        result = self.logic.evaluate_final_offer(self.session, 960000)
+        result = self.logic.evaluate_final_offer(self.session, 240000)
         self.assertEqual(result["outcome"], "Accepted")
-        self.assertEqual(result["final_price"], 960000)
+        self.assertEqual(result["final_price"], 240000)
 
     def test_final_offer_rejection_logic(self):
         self.session.turn_count = 5
         self.session.save(update_fields=["turn_count"])
         self._seed_turns(5)
 
-        result = self.logic.evaluate_final_offer(self.session, 900000)
+        result = self.logic.evaluate_final_offer(self.session, 230000)
         self.assertEqual(result["outcome"], "Declined")
         self.assertIsNone(result["final_price"])
 
@@ -87,14 +97,14 @@ class TurnAndFinalOfferLogicTests(TestCase):
         self.session.save(update_fields=["turn_count"])
 
         with self.assertRaises(ValidationError):
-            self.logic.evaluate_final_offer(self.session, 960000)
+            self.logic.evaluate_final_offer(self.session, 240000)
 
     def test_process_message_turn_five_auto_finalizes(self):
         self.session.turn_count = 4
         self.session.save(update_fields=["turn_count"])
         self._seed_turns(4)
 
-        result = self.logic.process_message(self.session, "Final round offer", 960000)
+        result = self.logic.process_message(self.session, "Final round offer", 240000)
         self.session.refresh_from_db()
 
         self.assertEqual(result["turn_count"], 5)

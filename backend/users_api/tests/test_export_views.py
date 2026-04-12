@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
+from users_api.auth import create_access_token
 from users_api.models import NegotiationSession, UserProfile
 
 
@@ -27,6 +28,8 @@ class ExportViewsTests(TestCase):
             ai_profit=-40000,
             turn_count=5,
         )
+        self.token, _ = create_access_token(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
     def test_export_sessions_csv(self):
         response = self.client.get(reverse("export-sessions"))

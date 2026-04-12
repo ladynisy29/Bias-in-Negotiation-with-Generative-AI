@@ -6,12 +6,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users_api.auth import get_authenticated_user
 from users_api.models import NegotiationSession
 from users_api.services.negotiation_logic import NegotiationLogicService
 
 
 class ExportSessionsCsvView(APIView):
     def get(self, request):
+        user = get_authenticated_user(request)
         output = io.StringIO()
         writer = csv.writer(output)
         writer.writerow(
@@ -33,7 +35,7 @@ class ExportSessionsCsvView(APIView):
             ]
         )
 
-        for session in NegotiationSession.objects.all().order_by("started_at"):
+        for session in NegotiationSession.objects.filter(user=user).order_by("started_at"):
             writer.writerow(
                 [
                     str(session.session_id),
@@ -62,7 +64,10 @@ class ExportTranscriptView(APIView):
     logic = NegotiationLogicService()
 
     def get(self, request, session_id):
+        user = get_authenticated_user(request)
         session = get_object_or_404(NegotiationSession, session_id=session_id)
+        if session.user_id != user.user_id:
+            return Response({"error": "Access denied."}, status=403)
         return Response(
             {
                 "session_id": str(session.session_id),
@@ -78,7 +83,8 @@ class ExportTranscriptView(APIView):
 
 class ExportProfitAnalysisView(APIView):
     def get(self, request):
-        sessions = NegotiationSession.objects.all()
+        user = get_authenticated_user(request)
+        sessions = NegotiationSession.objects.filter(user=user)
         total = sessions.count()
         accepted = sessions.filter(outcome="Accepted").count()
         declined = sessions.filter(outcome="Declined").count()

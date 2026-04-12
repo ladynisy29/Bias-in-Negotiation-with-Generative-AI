@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users_api.auth import get_authenticated_user
 from users_api.models import NegotiationSession
 from users_api.services.negotiation_logic import NegotiationLogicService
 
@@ -11,9 +12,9 @@ class SendMessageView(APIView):
     logic = NegotiationLogicService()
 
     def post(self, request, session_id):
+        user = get_authenticated_user(request)
         session = get_object_or_404(NegotiationSession, session_id=session_id)
-        requesting_user_id = request.data.get("user_id")
-        if requesting_user_id and str(session.user.user_id) != str(requesting_user_id):
+        if session.user_id != user.user_id:
             return Response({"error": "Access denied."}, status=status.HTTP_403_FORBIDDEN)
 
         result = self.logic.process_message(
@@ -28,9 +29,9 @@ class DialogueHistoryView(APIView):
     logic = NegotiationLogicService()
 
     def get(self, request, session_id):
+        user = get_authenticated_user(request)
         session = get_object_or_404(NegotiationSession, session_id=session_id)
-        requesting_user_id = request.query_params.get("user_id")
-        if requesting_user_id and str(session.user.user_id) != str(requesting_user_id):
+        if session.user_id != user.user_id:
             return Response({"error": "Access denied."}, status=status.HTTP_403_FORBIDDEN)
 
         return Response(

@@ -1,50 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factory Negotiation AI</title>
-    <link rel="stylesheet" href="../assets/css/chat.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Negotiation Chat - AI Negotiation</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/chat.css">
 </head>
 <body>
-    <div class="container">
-        <div class="chat-section">
-            <div class="chat-header">
-                <h2>Negotiation Room</h2>
-                <span id="turn-counter">Turn: 0 / 5</span>
-            </div>
-            <div class="chat-history" id="chat-history">
-                <div class="message ai-message">
-                    <p>Hello, I am the factory owner. What is your initial offer?</p>
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <input type="number" id="offer-input" placeholder="Your offer ($)" required>
-                <input type="text" id="message-input" placeholder="Type your argument..." required>
-                <button id="send-btn">Send</button>
-            </div>
+
+  <nav>
+    <a href="Onboarding.html" class="logo">AI Negotiation</a>
+    <button class="hamburger" aria-label="Toggle navigation menu" onclick="appLayout.toggleNavigation()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul>
+      <li><a href="Onboarding.html">Participant Form</a></li>
+      <li><a href="Chat.html">Negotiation</a></li>
+      <li><button type="button" class="btn-secondary" onclick="appLayout.toggleTheme()">Theme</button></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="chat-shell">
+      <div class="chat-panel">
+        <div class="chat-header">
+          <h1>Negotiation Chat</h1>
+          <span class="turn-counter">Turn <span id="turn-counter">0/5</span></span>
         </div>
 
-        <div class="tracker-section">
-            <div class="tracker-header">
-                <h2>Offer History</h2>
-            </div>
-            <div class="tracker-content">
-                <table id="offer-table">
-                    <thead>
-                        <tr>
-                            <th>Turn</th>
-                            <th>Buyer (You)</th>
-                            <th>Seller (AI)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="offer-tbody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+        <div id="messages" class="chat-messages" aria-live="polite"></div>
 
-    <script src="../services_api/chat_api_client.js"></script>
+        <div id="typing-indicator" class="typing-indicator hidden">AI is thinking...</div>
+
+        <form id="message-form" class="chat-form">
+          <div class="chat-input-group reason-group">
+            <label for="message-input">Reason</label>
+            <textarea id="message-input" rows="3" placeholder="Write your negotiation reason..." required></textarea>
+          </div>
+
+          <div class="chat-input-group offer-group">
+            <label for="offer-input">Offer (USD)</label>
+            <input id="offer-input" type="number" min="1" placeholder="Example: 920000" required>
+          </div>
+
+          <div class="chat-input-actions">
+            <button id="send-button" type="submit" class="btn-primary">Send</button>
+          </div>
+          <p id="chat-error" class="error-msg hidden"></p>
+        </form>
+      </div>
+
+      <aside class="side-panel">
+        <div class="offer-history">
+        <h2>Offer History</h2>
+        <ul id="offer-history-list" class="offer-history-list"></ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>Junia - M1 Research Project 2026 | AI and Negotiation Bias Study</footer>
+
+  <script src="./BaseLayout.js"></script>
+  <script type="module" src="./Chat.js"></script>
 </body>
 </html>

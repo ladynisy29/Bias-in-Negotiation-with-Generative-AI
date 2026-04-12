@@ -24,13 +24,20 @@
   <main class="container mt-4 mb-4">
     <section class="card-sm" style="max-width: 720px; margin: 0 auto;">
       <h1 class="mb-2">Participant Information</h1>
-      <p class="text-muted mb-3">All fields are optional. Fill any you want, or skip directly to negotiation.</p>
+      <p class="text-muted mb-3">All fields are optional. The AI will greet you first in chat, then you can send your first offer there.</p>
 
       <form id="onboarding-form">
         <div class="grid-2">
           <div class="form-group">
             <label for="gender">Gender</label>
-            <input id="gender" name="gender" type="text" placeholder="Optional" />
+            <select id="gender" name="gender">
+              <option value="">Select (optional)</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Transgender">Transgender</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="age">Age</label>
@@ -47,12 +54,6 @@
             <label for="nationality">Nationality</label>
             <input id="nationality" name="nationality" type="text" placeholder="Optional" />
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="initial-offer">Opening Offer (USD)</label>
-          <input id="initial-offer" name="initial-offer" type="number" min="1" placeholder="Example: 900000" required />
-          <small class="helper-text">This is your first offer for the building negotiation.</small>
         </div>
 
         <button type="submit" id="next-button" class="btn-primary">Next</button>

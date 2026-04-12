@@ -1,0 +1,104 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Backend Server",
+			"type": "shell",
+			"command": "c:/Users/empre/Downloads/Bias/.venv/Scripts/python.exe",
+			"args": [
+				"backend/manage.py",
+				"runserver",
+				"127.0.0.1:8000"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Frontend Dev Server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "Run Backend Server (Backend Dir)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location backend; c:/Users/empre/Downloads/Bias/.venv/Scripts/python.exe manage.py runserver 127.0.0.1:8000"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Backend Server (Backend Dir)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location backend; c:/Users/empre/Downloads/Bias/.venv/Scripts/python.exe manage.py runserver 127.0.0.1:8000"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Frontend Dev Server",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location frontend; npm run dev"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Backend Server (Backend Dir)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location backend; c:/Users/empre/Downloads/Bias/.venv/Scripts/python.exe manage.py runserver 127.0.0.1:8000"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Frontend Dev Server",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location frontend; npm run dev"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Backend Server (Backend Dir)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location backend; c:/Users/empre/Downloads/Bias/.venv/Scripts/python.exe manage.py runserver 127.0.0.1:8000"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Run Frontend Dev Server",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Set-Location frontend; npm run dev"
+			],
+			"isBackground": true
+		}
+	]
+}

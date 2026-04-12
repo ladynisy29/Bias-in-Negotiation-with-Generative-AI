@@ -18,8 +18,8 @@
 - [ ] 2.3 Implement session token generation and validation
 - [ ] 2.4 Implement session token expiration (24 hours)
 - [ ] 2.5 Create authentication middleware for request validation
-- [ ] 2.6 Implement logout endpoint (POST /logout)
-- [ ] 2.7 Add password hashing using bcrypt
+- [x] 2.6 Implement logout endpoint (POST /logout)
+- [x] 2.7 Add password hashing using bcrypt
 - [ ] 2.8 Write unit tests for authentication (target: 100% coverage)
 
 ## Phase 3: Negotiation Session Management

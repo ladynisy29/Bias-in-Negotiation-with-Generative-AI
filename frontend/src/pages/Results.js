@@ -2,7 +2,6 @@ import { exportTranscript, getSession } from "../services_api/chat_api_client.js
 
 const params = new URLSearchParams(window.location.search);
 const sessionId = params.get("session_id") || localStorage.getItem("session_id");
-const userId = localStorage.getItem("user_id");
 
 const outcomeNode = document.getElementById("outcome-badge");
 const finalPriceNode = document.getElementById("final-price");
@@ -44,7 +43,7 @@ async function load() {
     return;
   }
 
-  const session = await getSession(sessionId, userId);
+  const session = await getSession(sessionId);
   const finalResult = localStorage.getItem("final_result");
   const parsed = finalResult ? JSON.parse(finalResult) : null;
 

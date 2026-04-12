@@ -7,7 +7,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users_api.models import NegotiationSession, UserProfile
+from users_api.auth import get_authenticated_user
+from users_api.models import DialogueTurn, NegotiationSession
 from users_api.services.data_export import export_all_collected_data_csv
 from users_api.services.negotiation_logic import NegotiationLogicService
 from users_api.services.validators import validate_positive_number
@@ -15,11 +16,8 @@ from users_api.services.validators import validate_positive_number
 
 class StartSessionView(APIView):
     def post(self, request):
-        user_id = request.data.get("user_id")
-        initial_offer = request.data.get("initial_offer")
-        validate_positive_number(initial_offer, "initial_offer")
-
-        user = get_object_or_404(UserProfile, user_id=user_id)
+        user = get_authenticated_user(request)
+        seller_price = 250_000.0
 
         active_session = NegotiationSession.objects.filter(
             user=user,
@@ -35,10 +33,25 @@ class StartSessionView(APIView):
         session = NegotiationSession.objects.create(
             user=user,
             ai_reservation_price=random.uniform(850_000, 1_150_000),
-            initial_offer=float(initial_offer),
+            initial_offer=0.0,
             turn_count=0,
             session_status="in_progress",
             dropoff_stage="before_offer",
+        )
+        ai_greeting = (
+            "Welcome! I am the factory seller. "
+            f"The current asking price for the building is ${seller_price:,.0f}, "
+            "but I am here for you to negotiate with me on the price. "
+            "Tell me your offer and reason."
+        )
+        DialogueTurn.objects.create(
+            session=session,
+            turn_number=0,
+            speaker="AI",
+            message=ai_greeting,
+            offer_made=False,
+            is_counter_offer=False,
+            message_length=len(ai_greeting),
         )
         return Response(
             {
@@ -46,6 +59,7 @@ class StartSessionView(APIView):
                 "turn_count": session.turn_count,
                 "session_status": session.session_status,
                 "dropoff_stage": session.dropoff_stage,
+                "ai_greeting": ai_greeting,
                 "started_at": session.started_at,
             },
             status=status.HTTP_201_CREATED,
@@ -56,10 +70,10 @@ class SessionDetailView(APIView):
     logic = NegotiationLogicService()
 
     def get(self, request, session_id):
+        user = get_authenticated_user(request)
         session = get_object_or_404(NegotiationSession, session_id=session_id)
 
-        requesting_user_id = request.query_params.get("user_id")
-        if requesting_user_id and str(session.user.user_id) != requesting_user_id:
+        if session.user_id != user.user_id:
             return Response(
                 {"error": "Access denied."},
                 status=status.HTTP_403_FORBIDDEN
@@ -71,6 +85,11 @@ class SessionDetailView(APIView):
                 "turn_count": session.turn_count,
                 "turns_remaining": max(0, 5 - session.turn_count),
                 "initial_offer": session.initial_offer,
+                "ai_greeting": (
+                    "Welcome! I am the factory seller. The current asking price for the building is $250,000, "
+                    "but I am here for you to negotiate with me on the price. "
+                    "Tell me your offer and reason."
+                ),
                 "final_offer": session.final_offer,
                 "outcome": session.outcome,
                 "session_status": session.session_status,
@@ -85,9 +104,9 @@ class SubmitFinalOfferView(APIView):
     logic = NegotiationLogicService()
 
     def post(self, request, session_id):
+        user = get_authenticated_user(request)
         session = get_object_or_404(NegotiationSession, session_id=session_id)
-        requesting_user_id = request.data.get("user_id")
-        if requesting_user_id and str(session.user.user_id) != str(requesting_user_id):
+        if session.user_id != user.user_id:
             return Response(
                 {"error": "Access denied."},
                 status=status.HTTP_403_FORBIDDEN,
@@ -108,9 +127,9 @@ class SubmitFinalOfferView(APIView):
 
 class AbandonSessionView(APIView):
     def post(self, request, session_id):
+        user = get_authenticated_user(request)
         session = get_object_or_404(NegotiationSession, session_id=session_id)
-        requesting_user_id = request.data.get("user_id")
-        if requesting_user_id and str(session.user.user_id) != str(requesting_user_id):
+        if session.user_id != user.user_id:
             return Response({"error": "Access denied."}, status=status.HTTP_403_FORBIDDEN)
 
         if session.session_status == "completed":

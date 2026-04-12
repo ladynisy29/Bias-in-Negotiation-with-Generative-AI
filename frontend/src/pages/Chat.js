@@ -6,7 +6,7 @@ import {
 
 const params = new URLSearchParams(window.location.search);
 let sessionId = params.get("session_id") || localStorage.getItem("session_id");
-let userId = localStorage.getItem("user_id");
+const accessToken = localStorage.getItem("access_token");
 
 const messagesNode = document.getElementById("messages");
 const historyNode = document.getElementById("offer-history-list");
@@ -18,7 +18,7 @@ const errorNode = document.getElementById("chat-error");
 const typingNode = document.getElementById("typing-indicator");
 const sendButton = document.getElementById("send-button");
 
-if (!sessionId) {
+if (!sessionId || !accessToken) {
   window.location.href = "Onboarding.html";
 } else {
 }
@@ -54,7 +54,7 @@ function renderOfferHistory(offers) {
 
 async function refreshSession() {
   try {
-    const session = await getSession(sessionId, userId);
+    const session = await getSession(sessionId);
     turnCounter.textContent = `${session.turn_count}/5`;
 
     if (session.turn_count >= 5 || session.outcome) {
@@ -64,11 +64,19 @@ async function refreshSession() {
     }
 
     messagesNode.innerHTML = "";
+    if ((session.dialogue_turns || []).length === 0 && session.ai_greeting) {
+      addBubble(session.ai_greeting, "ai");
+    }
     session.dialogue_turns.forEach((turn) => addBubble(turn.message, turn.speaker === "Human" ? "human" : "ai"));
     renderOfferHistory(session.offer_progression);
   } catch (error) {
     errorNode.textContent = error.message;
     errorNode.classList.remove("hidden");
+    if (error?.status === 401 || error?.status === 403) {
+      setTimeout(() => {
+        window.location.href = "Onboarding.html";
+      }, 1200);
+    }
   }
 }
 
@@ -96,7 +104,7 @@ messageForm.addEventListener("submit", async (event) => {
 
   try {
     addBubble(message, "human");
-    const turnResult = await sendMessage(sessionId, { user_id: userId, message, offer });
+    const turnResult = await sendMessage(sessionId, { message, offer });
 
     if (turnResult?.outcome) {
       localStorage.setItem("final_result", JSON.stringify(turnResult));
@@ -110,6 +118,11 @@ messageForm.addEventListener("submit", async (event) => {
   } catch (error) {
     errorNode.textContent = error.message;
     errorNode.classList.remove("hidden");
+    if (error?.status === 401 || error?.status === 403) {
+      setTimeout(() => {
+        window.location.href = "Onboarding.html";
+      }, 1200);
+    }
   } finally {
     sendButton.disabled = false;
     typingNode.classList.add("hidden");
@@ -118,5 +131,5 @@ messageForm.addEventListener("submit", async (event) => {
 
 if (sessionId) {
   refreshSession();
-  getDialogue(sessionId, userId).catch(() => {});
+  getDialogue(sessionId).catch(() => {});
 }

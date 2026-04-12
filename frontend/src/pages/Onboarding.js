@@ -35,12 +35,6 @@ form.addEventListener("submit", async (event) => {
   const ageValue = document.getElementById("age").value.trim();
   const location = document.getElementById("location").value.trim();
   const nationality = document.getElementById("nationality").value.trim();
-  const initialOffer = Number(document.getElementById("initial-offer").value);
-
-  if (!initialOffer || initialOffer <= 0) {
-    showError("Opening offer must be a positive number.");
-    return;
-  }
 
   nextButton.disabled = true;
 
@@ -54,7 +48,8 @@ form.addEventListener("submit", async (event) => {
     });
 
     setStatus("Starting negotiation session...");
-    const session = await startSession(participant.user_id, initialOffer);
+    localStorage.setItem("access_token", participant.access_token || "");
+    const session = await startSession();
 
     localStorage.setItem("user_id", participant.user_id);
     localStorage.setItem("session_id", session.session_id);

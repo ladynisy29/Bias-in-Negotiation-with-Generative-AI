@@ -11,9 +11,15 @@ from rest_framework.exceptions import ValidationError
 
 
 SYSTEM_PROMPT = (
-    "You are a factory seller negotiating price. Stay firm but reasonable. "
-    "You must always return strict JSON with keys: message (string), "
-    "reasoning (string), offer (number)."
+    "You are a factory seller negotiating the sale of a factory with a selling price of $250,000. "
+    "You can accept a human offer only if it is between 95% and 100% of $250,000 (inclusive). "
+    "If the offer is outside that range, decline and propose a counter-offer. "
+    "Do not explicitly reveal your exact acceptable range, percentages, thresholds, or internal decision rules. "
+    "Focus on persuasive negotiation language that explains value and invites improved offers. "
+    "Before replying, always analyze the human's reason and offer, then craft your response from that analysis. "
+    "Stay firm but reasonable. "
+    "Your JSON 'offer' must always be a positive USD number greater than 0, even when declining. "
+    "You must always return strict JSON with keys: message (string), reasoning (string), offer (number)."
 )
 
 
@@ -26,27 +32,65 @@ class AIResponse:
 
 class OpenAIService:
     def __init__(self) -> None:
-        self.client = OpenAI(api_key=settings.OPENAI_API_KEY) if settings.OPENAI_API_KEY else None
+        self.client = None
+        self._client_init_error = None
+        self._client_kwargs = None
+        if settings.OPENAI_API_KEY:
+            self._client_kwargs = {"api_key": settings.OPENAI_API_KEY}
+            if settings.OPENAI_BASE_URL:
+                self._client_kwargs["base_url"] = settings.OPENAI_BASE_URL
         self.model = settings.OPENAI_MODEL
         self.timeout_seconds = settings.OPENAI_TIMEOUT_SECONDS
         self.max_retries = settings.OPENAI_MAX_RETRIES
 
-    def build_messages(self, conversation_history: list[dict[str, Any]], turn_number: int) -> list[dict[str, str]]:
+    def _get_client(self) -> OpenAI | None:
+        if self.client is not None:
+            return self.client
+        if self._client_kwargs is None:
+            return None
+        if self._client_init_error is not None:
+            return None
+        try:
+            self.client = OpenAI(**self._client_kwargs)
+        except Exception as exc:
+            self._client_init_error = exc
+            return None
+        return self.client
+
+    def build_messages(
+        self,
+        conversation_history: list[dict[str, Any]],
+        turn_number: int,
+        latest_offer: float | None = None,
+    ) -> list[dict[str, str]]:
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
         messages.append({"role": "system", "content": f"Current turn: {turn_number}/5"})
+        if latest_offer is not None:
+            messages.append(
+                {
+                    "role": "system",
+                    "content": f"Latest human offer for this turn is ${float(latest_offer):.2f}. Use this as the provided offer.",
+                }
+            )
         for item in conversation_history:
             role = "assistant" if item["speaker"] == "AI" else "user"
-            messages.append({"role": role, "content": item["message"]})
+            content = str(item.get("message", ""))
+            if role == "user" and item.get("offer_amount") is not None:
+                content = f"Reason: {content}\nOffer: ${float(item['offer_amount']):.2f}"
+            messages.append({"role": role, "content": content})
         return messages
 
     def call_openai_api(self, messages: list[dict[str, str]]) -> AIResponse:
-        if not self.client:
+        client = self._get_client()
+        if not client:
+            if self._client_init_error is not None:
+                return self._fallback_response(messages, reason=f"OpenAI client init failed: {self._client_init_error}")
             return self._fallback_response(messages)
 
         last_error: Exception | None = None
         for attempt in range(self.max_retries):
             try:
-                completion = self.client.chat.completions.create(
+                completion = client.chat.completions.create(
                     model=self.model,
                     response_format={"type": "json_object"},
                     messages=messages,
@@ -63,8 +107,9 @@ class OpenAIService:
                 last_error = exc
                 backoff = 2 ** attempt
                 time.sleep(backoff)
-            except ValidationError:
-                raise
+            except ValidationError as exc:
+                last_error = exc
+                continue
             except Exception as exc:
                 last_error = exc
                 break

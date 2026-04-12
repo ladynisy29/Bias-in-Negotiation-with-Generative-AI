@@ -1,7 +1,9 @@
 from collections import defaultdict
 from dataclasses import asdict, dataclass
+import logging
 from typing import Literal
 
+from django.db import transaction
 from django.db.models import Avg, Max, Min
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -10,6 +12,9 @@ from users_api.models import DialogueTurn, NegotiationSession, OfferHistory
 from users_api.services.data_export import export_all_collected_data_csv
 from users_api.services.openai_service import OpenAIService
 from users_api.services.validators import validate_message, validate_positive_number
+
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -37,54 +42,66 @@ class NegotiationLogicService:
             raise ValidationError({"turn_count": "Maximum turns reached."})
 
         turn_number = session.turn_count + 1
-        self._create_dialogue_turn(
-            session=session,
-            turn_number=turn_number,
-            speaker="Human",
-            message=message,
-            extracted_offer=float(offer),
-            reasoning=None,
-            offer_amount=float(offer),
-            is_counter_offer=turn_number > 1,
-        )
-        self._create_offer_history(session, turn_number, float(offer), "Human")
+        initial_offer_captured = session.turn_count == 0 and (session.initial_offer or 0) <= 0
+        with transaction.atomic():
+            if initial_offer_captured:
+                session.initial_offer = float(offer)
 
-        conversation_history = self._get_conversation_history(session)
-        ai_response = self.openai_service.call_openai_api(
-            self.openai_service.build_messages(conversation_history, turn_number)
-        )
+            self._create_dialogue_turn(
+                session=session,
+                turn_number=turn_number,
+                speaker="Human",
+                message=message,
+                extracted_offer=float(offer),
+                reasoning=None,
+                offer_amount=float(offer),
+                is_counter_offer=turn_number > 1,
+            )
+            self._create_offer_history(session, turn_number, float(offer), "Human")
 
-        extracted_offer = self.openai_service.extract_offer_from_message(ai_response.message)
-        ai_offer = extracted_offer or ai_response.offer
+            conversation_history = self._get_conversation_history(session)
+            ai_response = self.openai_service.call_openai_api(
+                self.openai_service.build_messages(
+                    conversation_history,
+                    turn_number,
+                    latest_offer=float(offer),
+                )
+            )
 
-        self._create_dialogue_turn(
-            session,
-            turn_number,
-            "AI",
-            ai_response.message,
-            ai_offer,
-            ai_response.reasoning,
-            offer_amount=ai_offer,
-            is_counter_offer=True,
-        )
-        self._create_offer_history(session, turn_number, ai_offer, "AI")
+            extracted_offer = self.openai_service.extract_offer_from_message(ai_response.message)
+            ai_offer = float(ai_response.offer) if ai_response.offer is not None else extracted_offer
 
-        session.turn_count = turn_number
-        response_outcome = None
-        response_final_price = None
-        response_human_profit = None
-        response_ai_profit = None
-        response_acceptance_threshold = None
+            self._create_dialogue_turn(
+                session,
+                turn_number,
+                "AI",
+                ai_response.message,
+                ai_offer,
+                ai_response.reasoning,
+                offer_amount=ai_offer,
+                is_counter_offer=True,
+            )
+            self._create_offer_history(session, turn_number, ai_offer, "AI")
 
-        if turn_number == 5:
-            final_result = self.evaluate_final_offer(session, float(offer))
-            response_outcome = final_result["outcome"]
-            response_final_price = final_result["final_price"]
-            response_human_profit = final_result["human_profit"]
-            response_ai_profit = final_result["ai_profit"]
-            response_acceptance_threshold = final_result["acceptance_threshold"]
-        else:
-            session.save(update_fields=["turn_count"])
+            session.turn_count = turn_number
+            response_outcome = None
+            response_final_price = None
+            response_human_profit = None
+            response_ai_profit = None
+            response_acceptance_threshold = None
+
+            if turn_number == 5:
+                final_result = self.evaluate_final_offer(session, float(offer))
+                response_outcome = final_result["outcome"]
+                response_final_price = final_result["final_price"]
+                response_human_profit = final_result["human_profit"]
+                response_ai_profit = final_result["ai_profit"]
+                response_acceptance_threshold = final_result["acceptance_threshold"]
+            else:
+                update_fields = ["turn_count"]
+                if initial_offer_captured:
+                    update_fields.append("initial_offer")
+                session.save(update_fields=update_fields)
 
         result = NegotiationTurnResult(
             ai_message=ai_response.message,
@@ -96,6 +113,10 @@ class NegotiationLogicService:
             human_profit=response_human_profit,
             ai_profit=response_ai_profit,
             acceptance_threshold=response_acceptance_threshold,
+        )
+        logger.info(
+            "Negotiation turn processed",
+            extra={"session_id": str(session.session_id), "turn_number": turn_number},
         )
         return asdict(result)
 
@@ -195,9 +216,16 @@ class NegotiationLogicService:
             concession_percentage=concession_percentage,
         )
 
-    def _get_conversation_history(self, session: NegotiationSession) -> list[dict[str, str]]:
+    def _get_conversation_history(self, session: NegotiationSession) -> list[dict]:
         turns = DialogueTurn.objects.filter(session=session).order_by("turn_number", "created_at")
-        return [{"speaker": t.speaker, "message": t.message} for t in turns]
+        return [
+            {
+                "speaker": t.speaker,
+                "message": t.message,
+                "offer_amount": t.offer_amount,
+            }
+            for t in turns
+        ]
 
     def get_dialogue_history(self, session: NegotiationSession) -> list[dict]:
         turns = DialogueTurn.objects.filter(session=session).order_by("turn_number", "created_at")
@@ -294,8 +322,10 @@ class NegotiationLogicService:
         if session.turn_count < 5:
             raise ValidationError({"turn_count": "Cannot submit final offer before turn 5."})
 
-        threshold = session.ai_reservation_price * 0.95
-        accepted = float(final_offer) >= threshold
+        seller_price = 250_000.0
+        min_acceptable_offer = seller_price * 0.95
+        max_acceptable_offer = seller_price
+        accepted = min_acceptable_offer <= float(final_offer) <= max_acceptable_offer
 
         # Ensure terminal turn state is persisted when finalizing from the 5th chat turn.
         session.turn_count = max(session.turn_count, 5)
@@ -306,10 +336,11 @@ class NegotiationLogicService:
         session.dropoff_stage = "after_offer"
         session.final_price = float(final_offer) if accepted else None
 
-        BUYER_RESERVATION_PRICE = 25_000_000
+        buyer_reservation_price = seller_price
+        seller_reservation_price = min_acceptable_offer
         if accepted:
-            session.human_profit = BUYER_RESERVATION_PRICE - float(final_offer)
-            session.ai_profit = float(final_offer) - session.ai_reservation_price
+            session.human_profit = max(0.0, buyer_reservation_price - float(final_offer))
+            session.ai_profit = max(0.0, float(final_offer) - seller_reservation_price)
         else:
             session.human_profit = 0
             session.ai_profit = 0
@@ -342,7 +373,7 @@ class NegotiationLogicService:
             "final_price": session.final_price,
             "human_profit": session.human_profit,
             "ai_profit": session.ai_profit,
-            "acceptance_threshold": threshold,
+            "acceptance_threshold": min_acceptable_offer,
         }
 
     def validate_session_integrity(self, session: NegotiationSession) -> None:

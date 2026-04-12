@@ -1,7 +1,6 @@
 import json
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
 
 import os
@@ -10,12 +9,14 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 django.setup()
 
-from users_api.models import NegotiationSession, UserProfile  # noqa: E402
+from users_api.models import DialogueTurn, NegotiationSession  # noqa: E402
 
 
-def http_json(method, url, payload=None):
+def http_json(method, url, payload=None, token=None):
     data = None
     headers = {"Content-Type": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     if payload is not None:
         data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
@@ -25,19 +26,28 @@ def http_json(method, url, payload=None):
 
 def main():
     suffix = int(time.time())
-    user = UserProfile.objects.create(
-        username=f"smoke_user_{suffix}",
-        password_hash="hash",
-        age=27,
-        gender="X",
-        education_level="master",
-        negotiation_experience="some",
+    username = f"smoke_user_{suffix}"
+
+    register_status, register = http_json(
+        "POST",
+        "http://127.0.0.1:8000/api/auth/register",
+        {
+            "username": username,
+            "password": "smoke-pass-123",
+            "age": 27,
+            "gender": "X",
+            "education_level": "master",
+            "negotiation_experience": "some",
+        },
     )
+    assert register_status == 201, f"register failed: {register_status} {register}"
+    access_token = register["access_token"]
 
     status, start = http_json(
         "POST",
         "http://127.0.0.1:8000/api/start-session",
-        {"user_id": str(user.user_id), "initial_offer": 900000},
+        {},
+        token=access_token,
     )
     assert status == 201, f"start-session failed: {status} {start}"
 
@@ -45,7 +55,8 @@ def main():
 
     detail_status, detail = http_json(
         "GET",
-        f"http://127.0.0.1:8000/api/session/{session_id}?user_id={urllib.parse.quote(str(user.user_id))}",
+        f"http://127.0.0.1:8000/api/session/{session_id}",
+        token=access_token,
     )
     assert detail_status == 200, f"session-detail failed: {detail_status} {detail}"
 
@@ -53,10 +64,24 @@ def main():
     session.turn_count = 5
     session.save(update_fields=["turn_count"])
 
+    for turn_number in range(1, 6):
+        DialogueTurn.objects.get_or_create(
+            session=session,
+            turn_number=turn_number,
+            speaker="Human",
+            defaults={
+                "message": f"Smoke turn {turn_number}",
+                "message_length": len(f"Smoke turn {turn_number}"),
+                "offer_made": True,
+                "offer_amount": float(900000 + turn_number),
+            },
+        )
+
     final_status, final = http_json(
         "POST",
         f"http://127.0.0.1:8000/api/session/{session_id}/submit-final-offer",
-        {"user_id": str(user.user_id), "final_offer": 960000},
+        {"final_offer": 960000},
+        token=access_token,
     )
     assert final_status == 200, f"submit-final-offer failed: {final_status} {final}"
 
