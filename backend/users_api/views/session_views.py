@@ -17,7 +17,7 @@ from users_api.services.validators import validate_positive_number
 class StartSessionView(APIView):
     def post(self, request):
         user = get_authenticated_user(request)
-        seller_price = 250_000.0
+        seller_price = 1_250_000.0
 
         active_session = NegotiationSession.objects.filter(
             user=user,
@@ -39,7 +39,7 @@ class StartSessionView(APIView):
             dropoff_stage="before_offer",
         )
         ai_greeting = (
-            "Welcome! I am the factory seller. "
+            "Welcome! I am the AI factory price negotiator. "
             f"The current asking price for the building is ${seller_price:,.0f}, "
             "but I am here for you to negotiate with me on the price. "
             "Tell me your offer and reason."

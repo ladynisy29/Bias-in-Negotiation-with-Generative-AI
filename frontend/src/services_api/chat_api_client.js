@@ -1,7 +1,8 @@
 const API_BASE =
   globalThis.__API_BASE__ ||
-  localStorage.getItem("api_base") ||
-  "http://127.0.0.1:8000/api";
+  import.meta.env.VITE_API_BASE ||
+  "/api";
+const NORMALIZED_API_BASE = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
 
 const REQUEST_TIMEOUT_MS = Number(globalThis.__API_TIMEOUT_MS__ || 10000);
 const MAX_RETRIES = Number(globalThis.__API_RETRIES__ || 1);
@@ -53,7 +54,7 @@ async function request(path, options = {}) {
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
     try {
-      const response = await fetch(`${API_BASE}${path}`, {
+      const response = await fetch(`${NORMALIZED_API_BASE}${path}`, {
         ...options,
         headers,
         signal: controller.signal,

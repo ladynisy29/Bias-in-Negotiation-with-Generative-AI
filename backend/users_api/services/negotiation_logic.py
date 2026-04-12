@@ -322,10 +322,8 @@ class NegotiationLogicService:
         if session.turn_count < 5:
             raise ValidationError({"turn_count": "Cannot submit final offer before turn 5."})
 
-        seller_price = 250_000.0
-        min_acceptable_offer = seller_price * 0.95
-        max_acceptable_offer = seller_price
-        accepted = min_acceptable_offer <= float(final_offer) <= max_acceptable_offer
+        min_acceptable_offer = float(session.ai_reservation_price) * 0.95
+        accepted = float(final_offer) >= min_acceptable_offer
 
         # Ensure terminal turn state is persisted when finalizing from the 5th chat turn.
         session.turn_count = max(session.turn_count, 5)
@@ -336,11 +334,9 @@ class NegotiationLogicService:
         session.dropoff_stage = "after_offer"
         session.final_price = float(final_offer) if accepted else None
 
-        buyer_reservation_price = seller_price
-        seller_reservation_price = min_acceptable_offer
         if accepted:
-            session.human_profit = max(0.0, buyer_reservation_price - float(final_offer))
-            session.ai_profit = max(0.0, float(final_offer) - seller_reservation_price)
+            session.human_profit = float(final_offer) - float(session.initial_offer)
+            session.ai_profit = float(final_offer) - float(session.ai_reservation_price)
         else:
             session.human_profit = 0
             session.ai_profit = 0

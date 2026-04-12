@@ -79,16 +79,16 @@ class TurnAndFinalOfferLogicTests(TestCase):
         self.session.save(update_fields=["turn_count"])
         self._seed_turns(5)
 
-        result = self.logic.evaluate_final_offer(self.session, 240000)
+        result = self.logic.evaluate_final_offer(self.session, 960000)
         self.assertEqual(result["outcome"], "Accepted")
-        self.assertEqual(result["final_price"], 240000)
+        self.assertEqual(result["final_price"], 960000)
 
     def test_final_offer_rejection_logic(self):
         self.session.turn_count = 5
         self.session.save(update_fields=["turn_count"])
         self._seed_turns(5)
 
-        result = self.logic.evaluate_final_offer(self.session, 230000)
+        result = self.logic.evaluate_final_offer(self.session, 940000)
         self.assertEqual(result["outcome"], "Declined")
         self.assertIsNone(result["final_price"])
 
@@ -108,6 +108,6 @@ class TurnAndFinalOfferLogicTests(TestCase):
         self.session.refresh_from_db()
 
         self.assertEqual(result["turn_count"], 5)
-        self.assertIn(result["outcome"], ["Accepted", "Declined"])
+        self.assertEqual(result["outcome"], "Declined")
         self.assertEqual(self.session.turn_count, 5)
         self.assertEqual(self.session.outcome, result["outcome"])

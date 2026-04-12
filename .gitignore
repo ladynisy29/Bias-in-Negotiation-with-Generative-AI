@@ -14,6 +14,7 @@ venv/
 *.pot
 db.sqlite3
 backend/db.sqlite3
+backend/all_collected_data.csv
 media/
 staticfiles/
 
@@ -29,6 +30,9 @@ frontend/dist/
 frontend/playwright-report/
 frontend/test-results/
 frontend/.vite/
+
+# Deployment
+.vercel/
 
 # Editor / IDE
 .idea/
