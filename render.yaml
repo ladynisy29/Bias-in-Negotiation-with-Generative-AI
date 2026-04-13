@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: bias-backend
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: bash build.sh
+    startCommand: gunicorn core.wsgi:application
+    healthCheckPath: /api/auth/health
+    autoDeploy: true
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "true"
+      - key: ALLOW_DEV_AUTH_ENDPOINTS
+        value: "false"
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_TIMEOUT_SECONDS
+        value: "8"
+      - key: OPENAI_MAX_RETRIES
+        value: "2"
+      - key: ACCESS_TOKEN_TTL_HOURS
+        value: "12"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
