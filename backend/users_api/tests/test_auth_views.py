@@ -10,6 +10,18 @@ class AuthViewsTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
+    def test_auth_health_endpoint_returns_ok(self):
+        response = self.client.get(reverse("auth-health"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], "ok")
+        self.assertIn("database", response.data)
+
+    def test_uptime_ping_endpoint_returns_ok(self):
+        response = self.client.get(reverse("uptime-ping"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], "ok")
+        self.assertEqual(response.data["message"], "pong")
+
     def test_register_and_login_issue_token(self):
         register_response = self.client.post(
             reverse("auth-register"),

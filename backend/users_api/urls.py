@@ -7,6 +7,7 @@ from users_api.views.auth_views import (
     LoginView,
     LogoutView,
     SignupView,
+    UptimePingView,
 )
 from users_api.views.export_views import (
     ExportProfitAnalysisView,
@@ -22,6 +23,7 @@ from users_api.views.session_views import (
 
 urlpatterns = [
     path("auth/health", HealthAuthPlaceholderView.as_view(), name="auth-health"),
+    path("uptime", UptimePingView.as_view(), name="uptime-ping"),
     path("auth/dev-create-user", CreateTestUserView.as_view(), name="auth-dev-create-user"),
     path("auth/register", SignupView.as_view(), name="auth-register"),
     path("auth/login", LoginView.as_view(), name="auth-login"),

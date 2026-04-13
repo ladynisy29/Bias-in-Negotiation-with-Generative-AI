@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.db import connection
+from django.db.utils import DatabaseError
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import status
@@ -66,7 +68,26 @@ class CreateTestUserView(APIView):
 
 class HealthAuthPlaceholderView(APIView):
     def get(self, request):
-        return Response({"status": "auth module placeholder"})
+        database_ok = True
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+        except DatabaseError:
+            database_ok = False
+
+        payload = {
+            "status": "ok" if database_ok else "degraded",
+            "service": "bias-backend",
+            "database": "ok" if database_ok else "unreachable",
+        }
+        http_status = status.HTTP_200_OK if database_ok else status.HTTP_503_SERVICE_UNAVAILABLE
+        return Response(payload, status=http_status)
+
+
+class UptimePingView(APIView):
+    def get(self, request):
+        return Response({"status": "ok", "message": "pong"}, status=status.HTTP_200_OK)
 
 
 class SignupView(APIView):
