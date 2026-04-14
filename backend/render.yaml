@@ -9,6 +9,8 @@ services:
     healthCheckPath: /api/auth/health
     autoDeploy: true
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
       - key: DJANGO_DEBUG
         value: "false"
       - key: DJANGO_SECURE_SSL_REDIRECT

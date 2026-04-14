@@ -1,4 +1,4 @@
-import { createTestUser, startSession } from "../services_api/chat_api_client.js";
+import { registerUser, startSession } from "../services_api/chat_api_client.js";
 
 const form = document.getElementById("onboarding-form");
 const nextButton = document.getElementById("next-button");
@@ -27,6 +27,23 @@ function clearError() {
   errorNode.classList.add("hidden");
 }
 
+function randomString(length = 10) {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let out = "";
+  for (let index = 0; index < length; index += 1) {
+    out += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return out;
+}
+
+function buildParticipantCredentials() {
+  const suffix = `${Date.now().toString(36)}${randomString(4)}`;
+  return {
+    username: `participant_${suffix}`,
+    password: `P!${randomString(14)}Aa9`,
+  };
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearError();
@@ -39,8 +56,11 @@ form.addEventListener("submit", async (event) => {
   nextButton.disabled = true;
 
   try {
-    setStatus("Creating participant...");
-    const participant = await createTestUser("participant", {
+    setStatus("Creating participant account...");
+    const credentials = buildParticipantCredentials();
+    const participant = await registerUser({
+      username: credentials.username,
+      password: credentials.password,
       gender,
       age: ageValue || null,
       location,
