@@ -69,6 +69,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 database_url = os.getenv("DATABASE_URL", "").strip()
+if not database_url:
+    database_url = os.getenv("SUPABASE_DB_POOLER_URL", "").strip()
 if database_url:
     DATABASES = {
         "default": dj_database_url.parse(
