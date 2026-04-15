@@ -1,11 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.test import override_settings
 from rest_framework.test import APIClient
 
 from users_api.auth import create_access_token
 from users_api.models import NegotiationSession, UserProfile
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class ExportViewsTests(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -14,6 +16,10 @@ class ExportViewsTests(TestCase):
             password_hash="hash",
             age=31,
             gender="M",
+            location="Paris",
+            nationality="French",
+            native_language="French",
+            occupation="Engineer",
             education_level="bachelor",
             negotiation_experience="extensive",
         )
@@ -40,6 +46,9 @@ class ExportViewsTests(TestCase):
     def test_export_transcript(self):
         response = self.client.get(reverse("export-transcript", kwargs={"session_id": self.session.session_id}))
         self.assertEqual(response.status_code, 200)
+        self.assertIn("participant_profile", response.data)
+        self.assertEqual(response.data["participant_profile"]["native_language"], "French")
+        self.assertEqual(response.data["participant_profile"]["occupation"], "Engineer")
         self.assertIn("session_summary", response.data)
 
     def test_export_profit_analysis(self):
