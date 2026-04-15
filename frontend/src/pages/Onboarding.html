@@ -56,6 +56,52 @@
           </div>
         </div>
 
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="native-language">Native Language</label>
+            <select id="native-language" name="native_language">
+              <option value="">Select (optional)</option>
+              <option value="English">English</option>
+              <option value="French">French</option>
+              <option value="Spanish">Spanish</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="education-level">Education Level</label>
+            <select id="education-level" name="education_level">
+              <option value="">Select (optional)</option>
+              <option value="Below Bac">Below Bac</option>
+              <option value="Bac">Bac</option>
+              <option value="Bac +1">Bac +1</option>
+              <option value="Bac +2">Bac +2</option>
+              <option value="Bac +3">Bac +3</option>
+              <option value="Bac +4">Bac +4</option>
+              <option value="Bac +5">Bac +5</option>
+              <option value="Bac +8">Bac +8</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="negotiation-experience">Negotiation Experience (1-5)</label>
+            <select id="negotiation-experience" name="negotiation_experience">
+              <option value="">Select (optional)</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="occupation">Occupation</label>
+            <input id="occupation" name="occupation" type="text" placeholder="Optional" />
+          </div>
+        </div>
+
         <button type="submit" id="next-button" class="btn-primary">Next</button>
         <p id="onboarding-status" class="helper-text mt-2"></p>
         <p id="onboarding-error" class="error-msg hidden"></p>

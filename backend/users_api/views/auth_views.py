@@ -46,6 +46,8 @@ class CreateTestUserView(APIView):
             gender=str(payload.get("gender", "")).strip(),
             location=str(payload.get("location", "")).strip(),
             nationality=str(payload.get("nationality", "")).strip(),
+            native_language=str(payload.get("native_language", "")).strip(),
+            occupation=str(payload.get("occupation", "")).strip(),
             education_level=str(payload.get("education_level", "bachelor")),
             negotiation_experience=str(payload.get("negotiation_experience", "some")),
         )
@@ -60,6 +62,10 @@ class CreateTestUserView(APIView):
                 "gender": user.gender,
                 "location": user.location,
                 "nationality": user.nationality,
+                "native_language": user.native_language,
+                "occupation": user.occupation,
+                "education_level": user.education_level,
+                "negotiation_experience": user.negotiation_experience,
                 "message": "Test user created.",
             },
             status=201,
@@ -127,6 +133,8 @@ class SignupView(APIView):
             gender=str(payload.get("gender") or "").strip(),
             location=str(payload.get("location") or "").strip(),
             nationality=str(payload.get("nationality") or "").strip(),
+            native_language=str(payload.get("native_language") or "").strip(),
+            occupation=str(payload.get("occupation") or "").strip(),
             education_level=str(payload.get("education_level") or "unknown").strip() or "unknown",
             negotiation_experience=str(payload.get("negotiation_experience") or "none").strip() or "none",
         )

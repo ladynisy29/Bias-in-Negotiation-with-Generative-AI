@@ -52,6 +52,10 @@ form.addEventListener("submit", async (event) => {
   const ageValue = document.getElementById("age").value.trim();
   const location = document.getElementById("location").value.trim();
   const nationality = document.getElementById("nationality").value.trim();
+  const nativeLanguage = document.getElementById("native-language").value.trim();
+  const educationLevel = document.getElementById("education-level").value.trim();
+  const negotiationExperience = document.getElementById("negotiation-experience").value.trim();
+  const occupation = document.getElementById("occupation").value.trim();
 
   nextButton.disabled = true;
 
@@ -65,6 +69,10 @@ form.addEventListener("submit", async (event) => {
       age: ageValue || null,
       location,
       nationality,
+      native_language: nativeLanguage,
+      education_level: educationLevel,
+      negotiation_experience: negotiationExperience,
+      occupation,
     });
 
     setStatus("Starting negotiation session...");
@@ -80,6 +88,10 @@ form.addEventListener("submit", async (event) => {
         age: ageValue || "",
         location,
         nationality,
+        native_language: nativeLanguage,
+        education_level: educationLevel,
+        negotiation_experience: negotiationExperience,
+        occupation,
       })
     );
 

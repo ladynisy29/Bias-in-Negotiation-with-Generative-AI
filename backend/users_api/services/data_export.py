@@ -20,6 +20,10 @@ def export_all_collected_data_csv(output_path: str | None = None) -> Path:
         "gender",
         "location",
         "nationality",
+        "native_language",
+        "occupation",
+        "education_level",
+        "negotiation_experience",
         "created_at",
         "session_id",
         "initial_offer",
@@ -63,6 +67,10 @@ def export_all_collected_data_csv(output_path: str | None = None) -> Path:
                     "gender": user.gender,
                     "location": user.location,
                     "nationality": user.nationality,
+                    "native_language": user.native_language,
+                    "occupation": user.occupation,
+                    "education_level": user.education_level,
+                    "negotiation_experience": user.negotiation_experience,
                     "created_at": user.created_at.isoformat(),
                 }
             )

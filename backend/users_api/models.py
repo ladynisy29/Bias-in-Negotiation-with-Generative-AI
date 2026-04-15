@@ -12,6 +12,8 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=30, blank=True, default="")
     location = models.CharField(max_length=100, blank=True, default="")
     nationality = models.CharField(max_length=100, blank=True, default="")
+    native_language = models.CharField(max_length=30, blank=True, default="")
+    occupation = models.CharField(max_length=100, blank=True, default="")
     education_level = models.CharField(max_length=30)
     negotiation_experience = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
