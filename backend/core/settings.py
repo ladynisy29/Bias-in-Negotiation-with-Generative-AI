@@ -125,6 +125,23 @@ OPENAI_MAX_RETRIES = int(os.getenv("OPENAI_MAX_RETRIES", "3"))
 ACCESS_TOKEN_TTL_HOURS = int(os.getenv("ACCESS_TOKEN_TTL_HOURS", "12"))
 ALLOW_DEV_AUTH_ENDPOINTS = os.getenv("ALLOW_DEV_AUTH_ENDPOINTS", "false").lower() == "true"
 
+SESSION_TRANSCRIPT_EMAIL_ENABLED = env_bool("SESSION_TRANSCRIPT_EMAIL_ENABLED", default=False)
+SESSION_TRANSCRIPT_EMAIL_RECIPIENTS = [
+    email.strip()
+    for email in os.getenv("SESSION_TRANSCRIPT_EMAIL_RECIPIENTS", "").split(",")
+    if email.strip()
+]
+SESSION_TRANSCRIPT_EMAIL_SUBJECT_PREFIX = os.getenv("SESSION_TRANSCRIPT_EMAIL_SUBJECT_PREFIX", "Bias")
+
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@bias.local")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "localhost")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", default=False)
+
 CORS_ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv("CORS_ALLOWED_ORIGINS", "http://127.0.0.1:5173,http://localhost:5173").split(",")

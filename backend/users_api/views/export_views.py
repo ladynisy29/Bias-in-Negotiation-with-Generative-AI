@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from users_api.auth import get_authenticated_user
 from users_api.models import NegotiationSession
 from users_api.services.negotiation_logic import NegotiationLogicService
+from users_api.services.transcript_email import build_session_transcript_payload
 
 
 class ExportSessionsCsvView(APIView):
@@ -68,30 +69,7 @@ class ExportTranscriptView(APIView):
         session = get_object_or_404(NegotiationSession, session_id=session_id)
         if session.user_id != user.user_id:
             return Response({"error": "Access denied."}, status=403)
-        participant_profile = {
-            "user_id": str(session.user.user_id),
-            "age": session.user.age,
-            "gender": session.user.gender,
-            "location": session.user.location,
-            "nationality": session.user.nationality,
-            "native_language": session.user.native_language,
-            "occupation": session.user.occupation,
-            "education_level": session.user.education_level,
-            "negotiation_experience": session.user.negotiation_experience,
-            "created_at": session.user.created_at.isoformat() if session.user.created_at else None,
-        }
-        return Response(
-            {
-                "session_id": str(session.session_id),
-                "participant_profile": participant_profile,
-                "conversation": self.logic.get_dialogue_history(session),
-                "offer_progression": self.logic.offer_progression(session),
-                "concession_pattern": self.logic.calculate_concession_pattern(session),
-                "session_summary": self.logic.session_summary_statistics(session),
-                "session_status": session.session_status,
-                "dropoff_stage": session.dropoff_stage,
-            }
-        )
+        return Response(build_session_transcript_payload(session, logic=self.logic))
 
 
 class ExportProfitAnalysisView(APIView):

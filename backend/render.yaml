@@ -27,6 +27,10 @@ services:
         value: "12"
       - key: LOG_LEVEL
         value: INFO
+      - key: SESSION_TRANSCRIPT_EMAIL_ENABLED
+        value: "false"
+      - key: SESSION_TRANSCRIPT_EMAIL_SUBJECT_PREFIX
+        value: Bias
       - key: DJANGO_SECRET_KEY
         sync: false
       - key: DJANGO_ALLOWED_HOSTS
@@ -40,6 +44,24 @@ services:
       - key: CSRF_TRUSTED_ORIGINS
         sync: false
       - key: OPENAI_API_KEY
+        sync: false
+      - key: SESSION_TRANSCRIPT_EMAIL_RECIPIENTS
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false
+      - key: EMAIL_BACKEND
+        sync: false
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: EMAIL_USE_TLS
+        sync: false
+      - key: EMAIL_USE_SSL
         sync: false
       - key: DJANGO_SUPERUSER_USERNAME
         sync: false

@@ -49,6 +49,20 @@ Set these in the backend Vercel project:
 - `OPENAI_MAX_RETRIES=1`
 - `LOG_LEVEL=INFO`
 
+Optional transcript email export (sends a JSON transcript attachment when a session is completed or abandoned):
+
+- `SESSION_TRANSCRIPT_EMAIL_ENABLED=true`
+- `SESSION_TRANSCRIPT_EMAIL_RECIPIENTS=research@example.com,backup@example.com`
+- `SESSION_TRANSCRIPT_EMAIL_SUBJECT_PREFIX=Bias`
+- `DEFAULT_FROM_EMAIL=no-reply@example.com`
+- `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend`
+- `EMAIL_HOST=smtp.sendgrid.net`
+- `EMAIL_PORT=587`
+- `EMAIL_HOST_USER=apikey`
+- `EMAIL_HOST_PASSWORD=<smtp-or-provider-password>`
+- `EMAIL_USE_TLS=true`
+- `EMAIL_USE_SSL=false`
+
 Redeploy after saving env vars.
 
 ### Run migrations for backend

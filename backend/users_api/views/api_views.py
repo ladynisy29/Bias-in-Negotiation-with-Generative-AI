@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from users_api.auth import get_authenticated_user
 from users_api.models import NegotiationSession
 from users_api.services.negotiation_logic import NegotiationLogicService
+from users_api.services.transcript_email import send_session_transcript_email
 
 
 class SendMessageView(APIView):
@@ -22,6 +23,8 @@ class SendMessageView(APIView):
             message=request.data.get("message", ""),
             offer=request.data.get("offer"),
         )
+        if session.session_status == "completed" and session.ended_at is not None:
+            send_session_transcript_email(session, trigger="auto-finalized-turn-five")
         return Response(result)
 
 

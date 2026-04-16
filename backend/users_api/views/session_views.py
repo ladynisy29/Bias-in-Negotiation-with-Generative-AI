@@ -11,6 +11,7 @@ from users_api.auth import get_authenticated_user
 from users_api.models import DialogueTurn, NegotiationSession
 from users_api.services.data_export import export_all_collected_data_csv
 from users_api.services.negotiation_logic import NegotiationLogicService
+from users_api.services.transcript_email import send_session_transcript_email
 from users_api.services.validators import validate_positive_number
 
 
@@ -122,6 +123,8 @@ class SubmitFinalOfferView(APIView):
             session,
             request.data.get("final_offer")
         )
+        if session.session_status == "completed" and session.ended_at is not None:
+            send_session_transcript_email(session, trigger="submit-final-offer")
         return Response(result)
 
 
@@ -173,6 +176,8 @@ class AbandonSessionView(APIView):
             export_all_collected_data_csv()
         except Exception:
             pass
+
+        send_session_transcript_email(session, trigger="abandon-session")
 
         return Response(
             {
