@@ -102,6 +102,23 @@ class SignupView(APIView):
         username = str(payload.get("username") or "").strip().lower()
         email = str(payload.get("email") or "").strip().lower()
         password = str(payload.get("password") or "")
+        age_value = payload.get("age")
+        parsed_age = None
+
+        if age_value not in (None, ""):
+            try:
+                parsed_age = int(age_value)
+            except (TypeError, ValueError):
+                return Response(
+                    {"error": "Age must be a valid number."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            if parsed_age < 0:
+                return Response(
+                    {"error": "Age must be zero or greater."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         if not username or not password:
             return Response(
@@ -130,6 +147,7 @@ class SignupView(APIView):
         user = UserProfile.objects.create(
             username=username,
             password_hash=hash_user_password(password),
+            age=parsed_age,
             gender=str(payload.get("gender") or "").strip(),
             location=str(payload.get("location") or "").strip(),
             nationality=str(payload.get("nationality") or "").strip(),

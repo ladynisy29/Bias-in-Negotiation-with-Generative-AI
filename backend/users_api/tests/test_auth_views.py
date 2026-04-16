@@ -28,6 +28,7 @@ class AuthViewsTests(TestCase):
             {
                 "username": "alice",
                 "password": "strong-pass-123",
+                "age": 26,
                 "gender": "F",
                 "education_level": "master",
                 "negotiation_experience": "some",
@@ -47,6 +48,7 @@ class AuthViewsTests(TestCase):
         self.assertIn("access_token", login_response.data)
 
         user = UserProfile.objects.get(username="alice")
+        self.assertEqual(user.age, 26)
         self.assertTrue(user.password_hash.startswith("bcrypt_sha256$"))
 
     def test_logout_revokes_access_token(self):
